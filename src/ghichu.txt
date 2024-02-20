@@ -1,0 +1,1 @@
+// Trong OnBroadingScreen chinh thong so resizeMode: 'cover', activeDotColor cho phu hop
