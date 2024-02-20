@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { SplashScreen } from './src/screens'
 import AuthNavigator from './src/navigators/AuthNavigator'
 import { NavigationContainer } from '@react-navigation/native'
+import { StatusBar } from 'react-native'
 
 const App = () => {
   const [isShownSplash, setIsShownSplash] = useState(true)
@@ -13,9 +14,15 @@ const App = () => {
     return () => clearTimeout(timeout)
   }, [])
   return (
-    isShownSplash ? <SplashScreen /> : <NavigationContainer>
-      <AuthNavigator />
-    </NavigationContainer>
+    <>
+      <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent />
+      {
+        isShownSplash ? (<SplashScreen />) : (<NavigationContainer>
+          <AuthNavigator />
+        </NavigationContainer>
+        )
+      }
+    </>
   )
 }
 
