@@ -4,5 +4,6 @@ export const appInfo = {
     size: {
         WIDTH: Dimensions.get('window').width,
         HEIGHT: Dimensions.get('window').height,
-    }
+    },
+    BASE_URL: 'http://192.168.1.59:3002'
 }
