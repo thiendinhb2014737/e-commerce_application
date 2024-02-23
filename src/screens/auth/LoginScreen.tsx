@@ -7,7 +7,7 @@ import { Lock, Sms } from 'iconsax-react-native'
 import { appColors } from '../../constants/appColors'
 import SocialLogin from './components/SocialLogin'
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }: any) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isRemember, setIsRemember] = useState(true);
@@ -29,7 +29,7 @@ const LoginScreen = () => {
                     }}
                 />
             </SectionComponent>
-            <SectionComponent>
+            <SectionComponent >
                 <TextComponent size={24} title text="Đăng nhập" />
                 <SpaceComponent height={21} />
                 <InputComponent
@@ -58,19 +58,22 @@ const LoginScreen = () => {
                     </RowComponent>
                     <ButtonComponent
                         text='Quên mật khẩu?'
-                        onPress={() => { }}
+                        onPress={() => navigation.navigate('ForgotPassword')}
                         type='text' />
                 </RowComponent>
             </SectionComponent>
             <SpaceComponent height={16} />
-            <SectionComponent>
+            <SectionComponent >
                 <ButtonComponent text='ĐĂNG NHẬP' type='primary' />
             </SectionComponent>
             <SocialLogin />
             <SectionComponent>
                 <RowComponent justify='center'>
                     <TextComponent text='Bạn chưa có tài khoản? ' />
-                    <ButtonComponent text='Đăng ký' type='link' />
+                    <ButtonComponent
+                        text='Đăng ký'
+                        type='link'
+                        onPress={() => navigation.navigate('SignUpScreen')} />
                 </RowComponent>
             </SectionComponent>
         </ContainerComponent>
