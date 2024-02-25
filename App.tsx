@@ -11,31 +11,15 @@ import store from './src/redux/store'
 import AppRouter from './src/navigators/AppRouter'
 
 const App = () => {
-  const [isShownSplash, setIsShownSplash] = useState(true)
-
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsShownSplash(false)
-    }, 1500)
-    return () => clearTimeout(timeout)
-  }, [])
-
-
 
   return (
     <>
       <Provider store={store}>
         <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent />
 
-
-        {
-          isShownSplash ? (<SplashScreen />) : (
-            <NavigationContainer>
-              <AppRouter />
-            </NavigationContainer>
-          )
-        }
+        <NavigationContainer>
+          <AppRouter />
+        </NavigationContainer>
       </Provider>
     </>
   )
