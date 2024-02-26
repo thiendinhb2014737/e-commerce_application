@@ -23,7 +23,7 @@ const ContainerComponent = (props: Props) => {
     const navigation: any = useNavigation()
 
     const returnContainer = isScroll ?
-        <ScrollView style={{ flex: 1 }}>{children}</ScrollView>
+        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>{children}</ScrollView>
         :
         <View style={{ flex: 1 }}>{children}</View>
 
@@ -65,7 +65,7 @@ const ContainerComponent = (props: Props) => {
     }
     return isImageBackground ? (
         <ImageBackground
-            source={require('../assets/images/Splash_bg.png')}
+            source={require('../assets/images/background.png')}
             style={{ flex: 1 }}
             imageStyle={{ flex: 1 }}>
             <SafeAreaView style={{ flex: 1 }}>

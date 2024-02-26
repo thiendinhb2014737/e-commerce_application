@@ -13,6 +13,13 @@ import moment from 'moment'
 import { useDispatch } from 'react-redux'
 import { addAuth } from '../../redux/reducers/authReducer'
 
+
+interface ErrorMessages {
+    email: string,
+    password: string,
+    cpnfirmPassword: string,
+}
+
 const initValue = {
     username: '',
     email: '',
@@ -24,16 +31,24 @@ const SignUpScreen = ({ navigation }: any) => {
 
     const [values, setValues] = useState(initValue)
     const [isLoading, setIsLoading] = useState(false)
-    const [errMessage, setErrMessage] = useState('')
+    const [errMessage, setErrMessage] = useState<any>()
+    const [isDisable, setIsDisable] = useState(true);
+
     const date = moment().format("MMMM DD YYYY")
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (values.email || values.password) {
-            setErrMessage('')
+        if (
+            !errMessage ||
+            (errMessage &&
+                (errMessage.email || errMessage.password || errMessage.confirmPassword)) || !values.email || !values.password || !values.confirmPassword
+        ) {
+            setIsDisable(true);
+        } else {
+            setIsDisable(false);
         }
+    }, [errMessage, values]);
 
-    }, [values.email, values.password])
 
     const handleChangeValue = (key: string, value: string) => {
 
@@ -43,37 +58,63 @@ const SignUpScreen = ({ navigation }: any) => {
         setValues(data)
     }
 
+    const formValidator = (key: string) => {
+        const data = { ...errMessage };
+        let message = ``;
+
+        switch (key) {
+            case 'email':
+                if (!values.email) {
+                    message = `Địa chỉ email là bắt buộc!`;
+                } else if (!Validate.email(values.email)) {
+                    message = 'Đại chỉ email không hợp lệ!';
+                } else {
+                    message = '';
+                }
+
+                break;
+
+            case 'password':
+                message = !values.password ? `Mật khẩu là bắt buộc!` : '';
+                break;
+
+            case 'confirmPassword':
+                if (!values.confirmPassword) {
+                    message = `Vui lòng nhập lại mật khẩu!`;
+                } else if (values.confirmPassword !== values.password) {
+                    message = 'Mật khẩu không trùng khớp!';
+                } else {
+                    message = '';
+                }
+
+                break;
+        }
+
+        data[`${key}`] = message;
+
+        setErrMessage(data);
+    };
 
     const handleRegister = async () => {
-        const { email, password, confirmPassword } = values
-        const emailValidation = Validate.email(email)
-        const passwordValidation = Validate.Password(password)
+        const api = `/verification`;
+        //setIsLoading(true);
+        try {
+            const res = await authenticationAPI.HandleAuthentication(
+                api,
+                { email: values.email },
+                'post',
+            );
+            console.log(res)
 
-        if (email && password && confirmPassword) {
-            if (emailValidation && passwordValidation) {
-                setErrMessage('')
-                setIsLoading(true)
-                //console.log(values)
-                try {
-                    const res = await authenticationAPI.HandleAuthentication('/register', {
-                        name: values.username,
-                        email,
-                        password,
-                        createOrderdAt: String(date)
-                    }, 'post')
-                    dispatch(addAuth(res.data))
-                    await AsyncStorage.setItem('auth', JSON.stringify(res.data))
-                    setIsLoading(false)
-                } catch (error) {
-                    console.log(error)
-                    setIsLoading(false)
-                }
-            } else {
-                setErrMessage('Địa chỉ email không hợp lệ!')
-            }
+            //   setIsLoading(false);
 
-        } else {
-            setErrMessage('Vui lòng nhập thông tin cần thiết!')
+            //   navigation.navigate('Verification', {
+            //     code: res.data.code,
+            //     ...values,
+            //   });
+        } catch (error) {
+            console.log(error);
+            //setIsLoading(false);
         }
 
 
@@ -99,6 +140,7 @@ const SignUpScreen = ({ navigation }: any) => {
                         onChange={val => handleChangeValue('email', val)}
                         allowClear
                         affix={<Sms size={22} color={appColors.gray} />}
+                        onEnd={() => formValidator('email')}
                     />
                     <InputComponent
                         value={values.password}
@@ -107,6 +149,7 @@ const SignUpScreen = ({ navigation }: any) => {
                         isPassword
                         allowClear
                         affix={<Lock size={22} color={appColors.gray} />}
+                        onEnd={() => formValidator('password')}
                     />
                     <InputComponent
                         value={values.confirmPassword}
@@ -115,6 +158,7 @@ const SignUpScreen = ({ navigation }: any) => {
                         isPassword
                         allowClear
                         affix={<Lock size={22} color={appColors.gray} />}
+                        onEnd={() => formValidator('confirmPassword')}
                     />
 
                 </SectionComponent>
@@ -122,14 +166,28 @@ const SignUpScreen = ({ navigation }: any) => {
                 {
                     errMessage && (
                         <SectionComponent>
-                            <TextComponent text={errMessage} color={appColors.danger} />
+                            {
+                                Object.keys(errMessage).map((error, index) => errMessage[`${error}`] && (
+                                    <TextComponent
+                                        text={errMessage[`${error}`]}
+                                        key={`error${index}`}
+                                        color={appColors.danger}
+                                    />
+                                ))
+                            }
+
                         </SectionComponent>
                     )
                 }
 
                 <SpaceComponent height={16} />
                 <SectionComponent >
-                    <ButtonComponent onPress={handleRegister} text='ĐĂNG KÝ' type='primary' />
+                    <ButtonComponent
+                        onPress={handleRegister}
+                        text='ĐĂNG KÝ'
+                        type='primary'
+                        disable={isDisable}
+                    />
                 </SectionComponent>
                 <SocialLogin />
                 <SectionComponent>
