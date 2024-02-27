@@ -3,7 +3,10 @@ import ForgotPassword from "./auth/ForgotPassword";
 import LoginScreen from "./auth/LoginScreen";
 import SignUpScreen from "./auth/SignUpScreen";
 import Verification from "./auth/Verification";
+import CartScreen from "./cart/CartScreen";
 import HomeScreen from "./home/HomeScreen";
+import MapScreen from "./map/MapScreen";
+import ProfileScreen from "./profile/ProfileScreen";
 
 export {
     HomeScreen,
@@ -11,5 +14,8 @@ export {
     SplashScreen,
     Verification,
     ForgotPassword,
-    SignUpScreen
+    SignUpScreen,
+    CartScreen,
+    MapScreen,
+    ProfileScreen
 }
