@@ -25,7 +25,7 @@ const AppRouter = () => {
     const checkLogin = async () => {
         const res = await getItem();
         //note
-        // res && dispatch(addAuth(JSON.parse(res)));
+        res && dispatch(addAuth(JSON.parse(res)));
     };
 
     return (
