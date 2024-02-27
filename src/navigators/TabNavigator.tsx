@@ -64,9 +64,9 @@ const TabNavigator = () => {
             },
         })}>
             <Tab.Screen name='Explore' component={ExploreNavigator} />
+            {/* <Tab.Screen name='Map' component={MapNavigator} /> */}
+            {/* Phần add 13:49 phan 13 */}
             <Tab.Screen name='Cart' component={CartNavigator} />
-            {/* Phần add 13:49 */}
-            <Tab.Screen name='Map' component={MapNavigator} />
             <Tab.Screen name='Profile' component={ProfileNavigator} />
         </Tab.Navigator>
     )

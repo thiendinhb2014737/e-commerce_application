@@ -1,1 +1,2 @@
 // Trong OnBroadingScreen chinh thong so resizeMode: 'cover', activeDotColor cho phu hop
+// Dang nhap bang gg facebook phan 14 32:53 tuong duong handleSignOut trong DrawerCustom

@@ -6,6 +6,7 @@ import Verification from "./auth/Verification";
 import CartScreen from "./cart/CartScreen";
 import HomeScreen from "./home/HomeScreen";
 import MapScreen from "./map/MapScreen";
+import SearchProduct from "./product/SearchProduct";
 import ProfileScreen from "./profile/ProfileScreen";
 
 export {
@@ -17,5 +18,6 @@ export {
     SignUpScreen,
     CartScreen,
     MapScreen,
-    ProfileScreen
+    ProfileScreen,
+    SearchProduct
 }

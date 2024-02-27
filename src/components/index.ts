@@ -6,6 +6,7 @@ import InputComponent from "./InputComponent";
 import RowComponent from "./RowComponent";
 import SectionComponent from "./SectionComponent";
 import SpaceComponent from "./SpaceComponent";
+import TagComponent from "./TagComponent";
 import TextComponent from "./TextComponent";
 
 export {
@@ -17,5 +18,6 @@ export {
     RowComponent,
     SectionComponent,
     CircleComponent,
-    DrawerCustom
+    DrawerCustom,
+    TagComponent
 }
