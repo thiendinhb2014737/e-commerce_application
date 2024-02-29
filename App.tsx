@@ -9,18 +9,23 @@ import MainNavigator from './src/navigators/MainNavigator'
 import { Provider } from 'react-redux'
 import store from './src/redux/store'
 import AppRouter from './src/navigators/AppRouter'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+
 
 const App = () => {
-
+  const queryClient = new QueryClient()
   return (
     <>
-      <Provider store={store}>
-        <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent />
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <StatusBar barStyle='dark-content' backgroundColor='transparent' translucent />
 
-        <NavigationContainer>
-          <AppRouter />
-        </NavigationContainer>
-      </Provider>
+          <NavigationContainer>
+            <AppRouter />
+          </NavigationContainer>
+        </Provider>
+      </QueryClientProvider>
     </>
   )
 }

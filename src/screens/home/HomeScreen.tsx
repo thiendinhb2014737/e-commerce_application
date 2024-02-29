@@ -1,14 +1,15 @@
-import { View, Text, Button, StatusBar, Platform, TouchableOpacity } from 'react-native'
+import { View, Text, Button, StatusBar, Platform, TouchableOpacity, FlatList, ScrollView } from 'react-native'
 import React from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
 import { authReducer, authSelector, removeAuth } from '../../redux/reducers/authReducer'
 import { globalStyles } from '../../styles/globalStyles'
 import { appColors } from '../../constants/appColors'
-import { CircleComponent, RowComponent, SpaceComponent, TextComponent } from '../../components'
+import { CategoriesList, CircleComponent, RowComponent, SpaceComponent, TagBarComponent, TextComponent } from '../../components'
 import { HambergerMenu, Notification, SearchNormal1, Sort } from 'iconsax-react-native'
 import { fontFamilies } from '../../constants/fontFamilies'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import ProductItem from '../../components/ProductItem'
 const HomeScreen = ({ navigation }: any) => {
     const dispatch = useDispatch()
     const auth = useSelector(authSelector)
@@ -114,8 +115,8 @@ const HomeScreen = ({ navigation }: any) => {
                     </RowComponent>
                     <SpaceComponent height={24} />
                 </View>
-
-                {/* <View style={{ marginBottom: -14 }}>
+                {/* 
+                <View style={{ marginBottom: -14 }}>
                     <CategoriesList isColor />
                 </View> */}
             </View>
@@ -132,7 +133,7 @@ const HomeScreen = ({ navigation }: any) => {
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     data={Array.from({ length: 5 })}
-                    renderItem={({ item }) => <EventItem type="card" item={item} />}
+                    renderItem={({ item }) => <ProductItem type="card" item={item} />}
                 />
             </ScrollView> */}
         </View>
