@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { HomeScreen, SearchProduct } from '../screens'
+import { HomeScreen, SearchProduct, TypeProduct } from '../screens'
 
 const ExploreNavigator = () => {
     const Stack = createNativeStackNavigator()
@@ -13,6 +13,7 @@ const ExploreNavigator = () => {
         }}>
             <Stack.Screen name='HomeScreen' component={HomeScreen} />
             <Stack.Screen name='SearchProduct' component={SearchProduct} />
+            <Stack.Screen name='TypeProduct' component={TypeProduct} />
 
         </Stack.Navigator>
     )

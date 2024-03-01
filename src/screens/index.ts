@@ -7,6 +7,7 @@ import CartScreen from "./cart/CartScreen";
 import HomeScreen from "./home/HomeScreen";
 import MapScreen from "./map/MapScreen";
 import SearchProduct from "./product/SearchProduct";
+import TypeProduct from "./product/TypeProduct";
 import ProfileScreen from "./profile/ProfileScreen";
 
 export {
@@ -19,5 +20,6 @@ export {
     CartScreen,
     MapScreen,
     ProfileScreen,
-    SearchProduct
+    SearchProduct,
+    TypeProduct
 }

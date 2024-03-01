@@ -1,35 +1,54 @@
-import { View, Text, Button, StatusBar, Platform, TouchableOpacity, FlatList, ScrollView } from 'react-native'
+import { View, Text, StatusBar, Platform, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
-import { authReducer, authSelector, removeAuth } from '../../redux/reducers/authReducer'
-import { globalStyles } from '../../styles/globalStyles'
-import { appColors } from '../../constants/appColors'
-import { ButtonComponent, CardComponent, CategoriesList, CircleComponent, RowComponent, SectionComponent, SpaceComponent, TagBarComponent, TextComponent } from '../../components'
-import { HambergerMenu, Notification, SearchNormal1, Sort, Star } from 'iconsax-react-native'
-import { fontFamilies } from '../../constants/fontFamilies'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import ProductItem from '../../components/ProductItem'
+import { authSelector } from '../../redux/reducers/authReducer'
 import productAPI from '../../apis/productApi'
-import TypeProduct from '../../components/TypeProduct'
-import { useDebounce } from '../../hook/useDebounce'
 import { useQuery } from '@tanstack/react-query'
+import { appColors } from '../../constants/appColors'
+import { globalStyles } from '../../styles/globalStyles'
+import { ButtonComponent, CircleComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '../../components'
+import { HambergerMenu, Notification, SearchNormal1, Sort } from 'iconsax-react-native'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { fontFamilies } from '../../constants/fontFamilies'
 import CardItem from '../../components/CardItem'
 import { LoadingModal } from '../../modals'
-import InputFormConponent from '../profile/InputFormComponent/InputFormConponent'
-import InputSearchConponent from './InputSearchComponent/InputSearchConponent'
-import ContainerComponent from './ContainerComponent/ContainerComponent'
-const HomeScreen = ({ navigation }: any) => {
+import { useLocation } from 'react-router-dom'
+import TypeProductComponent from './TypeProductComponent.tsx/TypeProductComponent'
+import InputSearchConponent from '../home/InputSearchComponent/InputSearchConponent'
+import { useDebounce } from '../../hook/useDebounce'
+import ContainerComponent from '../home/ContainerComponent/ContainerComponent'
+
+const TypeProduct = ({ navigation, route }: any) => {
     // const searchProduct = useSelector((state) => state?.product?.search)
-    const dispatch = useDispatch()
-    const auth = useSelector(authSelector)
-    const [typeProduct, setTypeProduct] = useState([])
+
+
     const [limit, setLimit] = useState(4)
     const [isLoading, setIsLoading] = useState(false)
+
+    const { state }: { state: string } = route.params
+    const [productType, setProductType] = useState([])
+    const [typeProduct, setTypeProduct] = useState([])
     const [search, setSearch] = useState('')
     const [inputSearch, setInputSearch] = useState('')
 
-    const searchDebounce = useDebounce(inputSearch, 100)
+    const [panigate, setPanigate] = useState({
+        page: 0,
+        limit: 4,
+        total: 1
+    })
+    // console.log(state)
+    console.log(inputSearch)
+
+    useEffect(() => {
+        if (state) {
+            fetchProductType(state, panigate.page, panigate.limit, inputSearch)
+        }
+    }, [state, panigate.page, panigate.limit, inputSearch])
+
+
+    useEffect(() => {
+        fetchAllTypeProduct()
+    }, [])
 
     const fetchAllTypeProduct = async () => {
         const api = `/get-all-type`;
@@ -37,43 +56,27 @@ const HomeScreen = ({ navigation }: any) => {
         setTypeProduct(res?.data)
     }
 
-    const fetchProductAll = async (context: any) => {
-        const limit = context?.queryKey && context?.queryKey[1]
-        const search = context?.queryKey && context?.queryKey[2]
-        if (search?.length > 0) {
-            setIsLoading(true)
-            const api = `/get-all?limit=${limit}&filter=name&filter=${search}&sort=desc&sort=createdAt`;
+    const fetchProductType = async (type: any, page: any, limit: any, inputSearch: string) => {
 
-            const res = await productAPI.HandleProduct(api, { limit, search }, 'get')
-            setIsLoading(false)
-            return res.data
-        } else {
+        if (inputSearch?.length > 0) {
             setIsLoading(true)
-            const api = `/get-all?limit=${limit}&sort=desc&sort=createdAt`;
-
+            const api = `/get-all?limit=${limit}&filter=name&filter=${inputSearch}&sort=desc&sort=createdAt`;
             const res = await productAPI.HandleProduct(api, { limit }, 'get')
             setIsLoading(false)
-            return res.data
+            setProductType(res?.data)
+        } else {
+            setIsLoading(true)
+            const api = `/get-all?filter=type&filter=${type}&limit=${limit}&sort=desc&sort=createdAt`;
+            const res = await productAPI.HandleProduct(api, { limit }, 'get')
+            setIsLoading(false)
+            setProductType(res?.data)
         }
-
     }
-
-    const { data: products, isPlaceholderData } = useQuery({
-        queryKey: ['products', limit, searchDebounce],
-        queryFn: fetchProductAll,
-    })
-
-
-    useEffect(() => {
-        fetchAllTypeProduct()
-    }, [])
 
     const onSearch = () => {
         setInputSearch(search)
     }
 
-    // console.log('search', search)
-    // console.log('inputSearch', inputSearch)
     return (
         <View style={[globalStyles.container]}>
 
@@ -86,7 +89,6 @@ const HomeScreen = ({ navigation }: any) => {
                     borderBottomRightRadius: 40,
                     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 52,
                 }}>
-
                 <View style={{ paddingHorizontal: 16 }}>
                     <RowComponent>
                         <TouchableOpacity onPress={() => navigation.openDrawer()}>
@@ -133,7 +135,6 @@ const HomeScreen = ({ navigation }: any) => {
                         </CircleComponent>
                     </RowComponent>
                     <SpaceComponent height={24} />
-
                     <RowComponent justify='center' >
                         <SectionComponent styles={{ paddingHorizontal: 10, paddingLeft: 0 }}>
                             <SearchNormal1
@@ -150,24 +151,22 @@ const HomeScreen = ({ navigation }: any) => {
                             onEnd={() => onSearch()}
                         />
                     </RowComponent>
-
                     <SpaceComponent height={24} />
                 </View>
             </View>
 
-
             <ContainerComponent isImageBackground isScroll>
+
                 <RowComponent justify='center' styles={{ gap: 20 }} >
-                    {typeProduct.map((item) => {
+                    {typeProduct?.map((item) => {
                         return (
-                            <TypeProduct name={item} key={item} navigation={navigation} />
+                            <TypeProductComponent name={item} key={item} navigation={navigation} />
                         )
                     })}
-
                 </RowComponent>
 
                 <RowComponent styles={{ display: 'flex', gap: 5, marginTop: 20, flexWrap: 'wrap' }}>
-                    {products?.map((product: any) => {
+                    {productType?.map((product: any) => {
                         return (
                             <CardItem
                                 key={product._id}
@@ -200,4 +199,4 @@ const HomeScreen = ({ navigation }: any) => {
     )
 }
 
-export default HomeScreen
+export default TypeProduct

@@ -12,8 +12,7 @@ interface Props {
     styles?: StyleProp<ViewStyle>;
 
 }
-
-const InputFormConponent = (props: Props) => {
+const InputSearchConponent = (props: Props) => {
     const {
         value,
         onChange,
@@ -36,27 +35,25 @@ const InputFormConponent = (props: Props) => {
     )
 }
 
-export default InputFormConponent
+export default InputSearchConponent
 const styles = StyleSheet.create({
     inputContainer: {
         flexDirection: 'row',
         borderRadius: 12,
         borderWidth: 1,
         borderColor: appColors.gray3,
-        width: '100%',
-        minHeight: 56,
+        width: 330,
+        height: 40,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 15,
+        paddingHorizontal: 8,
         backgroundColor: appColors.white,
-        marginBottom: 19,
+        marginBottom: 10,
     },
 
     input: {
-        padding: 0,
-        margin: 0,
         flex: 1,
-        paddingHorizontal: 14,
+        paddingHorizontal: 8,
         color: appColors.text,
     },
 });
