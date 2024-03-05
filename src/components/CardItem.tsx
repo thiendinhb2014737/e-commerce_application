@@ -18,16 +18,25 @@ interface Props {
     item?: any;
     type: 'list' | 'card';
     onPress?: () => void;
+    navigation: any
+
 }
 
 const CardItem = (props: Props) => {
     const { item, type, onPress,
         countInStock, description, image, name, price, rating,
-        typePro, selled, discount, id
+        typePro, selled, discount, id, navigation
     } = props;
 
     return type === 'card' ? (
-        <CardComponent styles={{ width: Dimensions.get('window').width * 0.42, height: 230, marginLeft: 17 }}>
+        <CardComponent
+            styles={{ width: Dimensions.get('window').width * 0.42, height: 230, marginLeft: 17 }}
+            onPress={() => {
+                navigation.navigate('ProductDetails', {
+                    ProductID: id,
+                })
+            }}
+        >
             <Image source={{ uri: image }} style={[localStyles.avatar]} />
             <TextComponent text={name} styles={{ textAlign: 'center' }} />
             <SectionComponent styles={{ paddingHorizontal: 10, paddingLeft: 0, paddingBottom: 0 }}>

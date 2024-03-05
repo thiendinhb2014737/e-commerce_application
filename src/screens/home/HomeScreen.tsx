@@ -181,7 +181,9 @@ const HomeScreen = ({ navigation }: any) => {
                                 selled={product.selled}
                                 discount={product.discount}
                                 id={product._id}
+                                navigation={navigation}
                                 type="card"
+
                             />
                         )
                     })}

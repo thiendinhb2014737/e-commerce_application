@@ -7,14 +7,19 @@ import MapNavigator from './MapNavigator'
 import ProfileNavigator from './ProfileNavigator'
 import { appColors } from '../constants/appColors'
 import { Calendar, Home, Home2, Location, User } from 'iconsax-react-native'
-import { TextComponent } from '../components'
-import { Platform } from 'react-native'
+import { CircleComponent, TextComponent } from '../components'
+import { Platform, View } from 'react-native'
 import Zocial from 'react-native-vector-icons/Zocial';
 import DrawerNavigator from './DrawerNavigator'
+import { useSelector } from 'react-redux'
+import { orderSelector } from '../redux/reducers/orderReducer'
+import { fontFamilies } from '../constants/fontFamilies'
+
 
 //42:20
 const TabNavigator = () => {
     const Tab = createBottomTabNavigator()
+    const order = useSelector(orderSelector)
     return (
         <Tab.Navigator screenOptions={({ route }) => ({
             headerShown: false,
@@ -34,7 +39,24 @@ const TabNavigator = () => {
                         icon = <Home size={size} color={color} />
                         break;
                     case 'Cart':
-                        icon = <Zocial name='cart' size={size} color={color} />;
+                        icon =
+                            <CircleComponent color="#fff" size={36}>
+                                <View>
+                                    <Zocial name='cart' size={size} color={color} />
+                                    <TextComponent
+                                        text={String(order?.orderItems?.length - 1)}
+                                        color={appColors.danger}
+                                        font={fontFamilies.medium}
+                                        styles={{
+                                            width: 10,
+                                            height: 16,
+                                            position: 'absolute',
+                                            top: -3,
+                                            right: -5,
+                                            fontSize: 12
+                                        }} />
+                                </View>
+                            </CircleComponent>
                         break;
                     case 'Map':
                         icon = <Location size={size} variant="Bold" color={color} />;

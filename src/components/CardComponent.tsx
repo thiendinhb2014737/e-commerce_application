@@ -11,16 +11,16 @@ interface Props {
 
     children: ReactNode;
     bgColor?: string;
-    styles?: StyleProp<ViewStyle>;
+    styles?: StyleProp<ViewStyle>
+    onPress?: () => void;
 }
 
 const CardComponent = (props: Props, { navigation }: any) => {
-    const { children, bgColor, styles,
-
-    } = props;
+    const { children, bgColor, styles, onPress } = props;
 
     return (
         <TouchableOpacity
+            onPress={onPress}
             style={[
                 globalStyles.shadow,
                 globalStyles.card,
