@@ -1,9 +1,9 @@
-import { View, Text, Platform, StatusBar, TextInput, Image } from 'react-native'
+import { View, Text, Platform, StatusBar, TextInput, Image, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import { ButtonComponent, CardComponent, CircleComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '../../components'
 import { LoadingModal } from '../../modals'
 import InputSearchConponent from '../home/InputSearchComponent/InputSearchConponent'
-import { ElementPlus, HambergerMenu, Minus, Notification, SearchNormal1 } from 'iconsax-react-native'
+import { ElementPlus, HambergerMenu, Minus, Notification, SearchNormal1, Star1 } from 'iconsax-react-native'
 import { appColors } from '../../constants/appColors'
 import { fontFamilies } from '../../constants/fontFamilies'
 import { TouchableOpacity } from 'react-native'
@@ -28,8 +28,15 @@ const ProductDetails = ({ navigation, route }: any) => {
     const user = useSelector(authSelector)
     const [isLoading, setIsLoading] = useState(false)
     const order = useSelector(orderSelector)
+    const [colorBorderS, setColorBorderS] = useState('#111')
+    const [colorBorderM, setColorBorderM] = useState('#111')
+    const [colorBorderL, setColorBorderL] = useState('#111')
+    const [colorBorderXL, setColorBorderXL] = useState('#111')
 
 
+
+
+    const [listChecked, setListChecked] = useState([''])
     const [errorLimitOrder, setErrorLimitOrder] = useState(false)
 
     const dispatch = useDispatch()
@@ -47,10 +54,7 @@ const ProductDetails = ({ navigation, route }: any) => {
         queryFn: fetchGetDetailsProduct, enabled: !!ProductID
     })
 
-    // console.log(productDetails?.name)
-    // console.log(size)
-    // console.log(numberProduct)
-    // console.log(order)
+
 
     // useEffect(() => {
     //     initFacebookSDK()
@@ -113,6 +117,7 @@ const ProductDetails = ({ navigation, route }: any) => {
         // }
 
     }
+    console.log(size)
     return (
         <View style={[globalStyles.container]}>
 
@@ -213,38 +218,63 @@ const ProductDetails = ({ navigation, route }: any) => {
             <CardComponent>
                 <RowComponent justify='flex-start' styles={{ padding: 6, borderWidth: 0.5 }}>
                     <TextComponent text={`${productDetails?.name}`} styles={{ fontSize: 17, paddingRight: 20 }} />
-                    <TextComponent text={`| ${productDetails?.rating}`} styles={{ paddingRight: 20 }} />
-                    <TextComponent text={`| (Đã bán ${productDetails?.selled})`} styles={{ paddingRight: 20 }} />
+                    <TextComponent text={`(-${productDetails?.discount}%)`} styles={{ fontSize: 12, paddingRight: 20 }} />
+                    <TextComponent text={`|  ${productDetails?.rating}`} styles={{ paddingRight: 3, fontSize: 12 }} />
+                    <Star1 size={12} color='orange' />
+                    <TextComponent text={`|  (Đã bán ${productDetails?.selled})`} styles={{ paddingRight: 20, paddingLeft: 20, fontSize: 12 }} />
                 </RowComponent>
                 <SpaceComponent height={6} />
-                <TextComponent text={`Giá bán: ${convertPrice(productDetails?.price)}`} styles={{ fontSize: 16 }} />
+                <RowComponent>
+                    <TextComponent text={`Giá bán:`} styles={{ fontSize: 14, paddingRight: 5 }} />
+                    <TextComponent text={`${convertPrice(productDetails?.price)}`} styles={{ fontSize: 18 }} />
+                </RowComponent>
                 <SpaceComponent height={6} />
 
                 <RowComponent>
-                    <TextComponent text='Kich co:' styles={{ paddingRight: 5 }} />
-                    <TouchableOpacity style={{ padding: 13, borderWidth: 0.5, borderTopLeftRadius: 20, borderBottomLeftRadius: 20, }} onPress={() => setSize('S')}>
+                    <TextComponent text='Kích cỡ:' styles={{ paddingRight: 5 }} />
+                    <TouchableOpacity style={[styles.checkBox]} onPress={() => setSize('S')}>{
+                        size === 'S' &&
+                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                    }</TouchableOpacity>
+                    <TextComponent text={productDetails?.sizeS} styles={{ padding: 10 }} />
+                    <TouchableOpacity style={[styles.checkBox]} onPress={() => setSize('M')}>{
+                        size === 'M' &&
+                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                    }</TouchableOpacity>
+                    <TextComponent text={productDetails?.sizeM} styles={{ padding: 10 }} />
+                    <TouchableOpacity style={[styles.checkBox]} onPress={() => setSize('L')}>{
+                        size === 'L' &&
+                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                    }</TouchableOpacity>
+                    <TextComponent text={productDetails?.sizeL} styles={{ padding: 10 }} />
+                    <TouchableOpacity style={[styles.checkBox]} onPress={() => setSize('XL')}>{
+                        size === 'XL' &&
+                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                    }</TouchableOpacity>
+                    <TextComponent text={productDetails?.sizeXL} styles={{ padding: 10 }} />
+                    {/* <TouchableOpacity style={{ padding: 13, borderWidth: 0.7, borderTopLeftRadius: 20, borderBottomLeftRadius: 20, borderBlockColor: colorBorderS }} onPress={() => { setSize('S'), setColorBorderS('blue') }}>
                         <TextComponent text={productDetails?.sizeS} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ padding: 13, borderWidth: 0.5 }} onPress={() => setSize('M')}>
+                    <TouchableOpacity style={{ padding: 13, borderWidth: 0.7, borderBlockColor: colorBorderM }} onPress={() => { setSize('M'), setColorBorderM('blue') }}>
                         <TextComponent text={productDetails?.sizeM} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ padding: 13, borderWidth: 0.5 }} onPress={() => setSize('L')}>
+                    <TouchableOpacity style={{ padding: 13, borderWidth: 0.7, borderBlockColor: colorBorderL }} onPress={() => { setSize('L'), setColorBorderL('blue') }}>
                         <TextComponent text={productDetails?.sizeL} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ padding: 13, borderWidth: 0.5, borderTopRightRadius: 20, borderBottomRightRadius: 20, }} onPress={() => setSize('XL')}>
+                    <TouchableOpacity style={{ padding: 13, borderWidth: 0.7, borderTopRightRadius: 20, borderBottomRightRadius: 20, borderBlockColor: colorBorderXL }} onPress={() => { setSize('XL'), setColorBorderXL('blue') }}>
                         <TextComponent text={productDetails?.sizeXL} />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </RowComponent>
                 <SpaceComponent height={6} />
                 <TextComponent text={`Số lượng còn lại (${productDetails?.countInStock}) sản phẩm`} />
                 <SpaceComponent height={6} />
                 <RowComponent>
-                    <TextComponent text='So luong:' styles={{ paddingRight: 5 }} />
-                    <TouchableOpacity style={{ padding: 6, borderWidth: 0.5 }} onPress={() => handleChangeCount('decrease', numberProduct === 1)} >
+                    <TextComponent text='Số lượng:' styles={{ paddingRight: 5 }} />
+                    <TouchableOpacity style={{ padding: 6, borderWidth: 0.7 }} onPress={() => handleChangeCount('decrease', numberProduct === 1)} >
                         <AntDesign name='minus' color={appColors.text} size={24} />
                     </TouchableOpacity>
-                    <TextComponent text={String(numberProduct)} styles={{ padding: 8.5, fontSize: 16, borderWidth: 0.5 }} />
-                    <TouchableOpacity style={{ padding: 6, borderWidth: 0.5 }}>
+                    <TextComponent text={String(numberProduct)} styles={{ padding: 8.5, fontSize: 16, borderWidth: 0.7 }} />
+                    <TouchableOpacity style={{ padding: 6, borderWidth: 0.7 }}>
                         <AntDesign name='plus' color={appColors.text} size={24} onPress={() => handleChangeCount('increase', numberProduct === productDetails?.countInStock)} />
                     </TouchableOpacity>
                 </RowComponent>
@@ -260,3 +290,14 @@ const ProductDetails = ({ navigation, route }: any) => {
 }
 
 export default ProductDetails
+const styles = StyleSheet.create({
+    check: {
+        alignSelf: 'center'
+    },
+    checkBox: {
+        width: 23,
+        height: 23,
+        borderWidth: 2,
+        borderColor: appColors.gray
+    }
+})

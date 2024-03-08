@@ -89,7 +89,7 @@ const HomeScreen = ({ navigation }: any) => {
                 <View style={{ paddingHorizontal: 16 }}>
                     <RowComponent>
                         <TouchableOpacity onPress={() => navigation.openDrawer()}>
-                            <HambergerMenu size={24} color={appColors.white} />
+                            <HambergerMenu size={28} color={appColors.white} />
                         </TouchableOpacity>
                         <View style={[{ flex: 1, alignItems: 'center' }]}>
                             <RowComponent>
@@ -155,9 +155,12 @@ const HomeScreen = ({ navigation }: any) => {
 
             <Image
                 source={require('../../assets/images/slider1.png')}
+                resizeMode='repeat'
                 style={{
-                    width: 600,
+                    width: 405,
                     height: 80,
+                    marginTop: 8,
+                    marginLeft: 10,
                     marginBottom: 10,
                 }}
             />
@@ -173,7 +176,7 @@ const HomeScreen = ({ navigation }: any) => {
                     </RowComponent>
                 </CardComponent>
 
-                <RowComponent styles={{ display: 'flex', gap: 5, marginTop: 20, flexWrap: 'wrap' }}>
+                <RowComponent styles={{ display: 'flex', gap: 0, marginTop: 0, flexWrap: 'wrap' }}>
                     {products?.map((product: any) => {
                         return (
                             <CardItem

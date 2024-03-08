@@ -39,19 +39,18 @@ const CardItem = (props: Props) => {
             }}
         >
             <Image source={{ uri: image }} style={[localStyles.avatar]} />
-            <TextComponent text={name} styles={{ textAlign: 'center' }} />
             <SectionComponent styles={{ paddingHorizontal: 10, paddingLeft: 0, paddingBottom: 0 }}>
+                <TextComponent text={name} styles={{ textAlign: 'center' }} />
                 <RowComponent justify='space-around'>
                     <RowComponent>
-                        <TextComponent text={String(rating)} styles={{ fontSize: 12 }} />
-                        <Star1 size={17} color='orange' />
-                        <TextComponent text={` (- ${String(discount)} %)`} styles={{ fontSize: 12 }} />
+                        <TextComponent text={String(rating)} styles={{ fontSize: 10, marginRight: 5 }} />
+                        <Star1 size={12} color='orange' />
                     </RowComponent>
-                    <TextComponent text={`Đã bán ${String(selled)}`} styles={{ fontSize: 12 }} />
+                    <TextComponent text={`Đã bán ${String(selled)}`} styles={{ fontSize: 10 }} />
                 </RowComponent>
                 <RowComponent justify='center' >
-                    <TextComponent text={`Giá: ${convertPrice(price)}`} styles={{ fontSize: 12 }} />
-
+                    <TextComponent text={`Giá: ${convertPrice(price)}`} styles={{ fontSize: 14 }} />
+                    <TextComponent text={` (- ${String(discount)} %)`} styles={{ fontSize: 10 }} />
                 </RowComponent>
             </SectionComponent>
         </CardComponent>

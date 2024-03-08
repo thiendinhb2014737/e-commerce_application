@@ -247,7 +247,7 @@ const CartScreen = ({ navigation }: any) => {
                 <StepComponent items={itemsDelivery} current={diliveryPriceMemo === 35000 ? 0 : diliveryPriceMemo === 25000 ? 1 : order?.orderItemsSelected?.length === 0 ? 0 : 2} />
                 <CardComponent>
                     <RowComponent>
-                        <Text style={{ fontSize: 14, width: 260 }} numberOfLines={1} ellipsizeMode='tail'>{`Địa chỉ giao hàng: ${detailsUser?.address}`}</Text>
+                        <Text style={{ fontSize: 14, width: 300 }} numberOfLines={1} ellipsizeMode='tail'>{`Địa chỉ giao hàng: ${detailsUser?.address}`}</Text>
                         <TouchableOpacity onPress={handleChangeAddress}>
                             <TextComponent text=' (Chỉnh sửa)' color={appColors.primary} />
                         </TouchableOpacity>
@@ -256,11 +256,11 @@ const CartScreen = ({ navigation }: any) => {
 
 
                 <CardComponent styles={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
-                    <TextComponent text={`Tổng tiền hàng: ${convertPrice(priceMemo)}`} />
-                    <TextComponent text={`Tổng giảm giá: ${convertPrice(priceDiscountMemo)}`} />
-                    <TextComponent text={`Tổng tiền phí vận chuyển: ${convertPrice(diliveryPriceMemo)}`} />
+                    <TextComponent text={`Tổng tiền hàng: ${convertPrice(priceMemo)}`} styles={{ padding: 3 }} />
+                    <TextComponent text={`Tổng giảm giá: ${convertPrice(priceDiscountMemo)}`} styles={{ padding: 3 }} />
+                    <TextComponent text={`Tổng tiền phí vận chuyển: ${convertPrice(diliveryPriceMemo)}`} styles={{ padding: 3 }} />
                     <CardComponent styles={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
-                        <TextComponent text={`Tổng thanh toán: ${convertPrice(totalPriceMemo)}`} color='red' />
+                        <TextComponent text={`Tổng thanh toán: ${convertPrice(totalPriceMemo)}`} color='red' styles={{ fontSize: 16 }} />
                     </CardComponent>
 
                 </CardComponent>
@@ -287,7 +287,7 @@ const CartScreen = ({ navigation }: any) => {
                                 <RowComponent justify='space-between' >
                                     <TouchableOpacity style={[styles.checkBox]} onPress={() => onChange(order?.product)}>{
                                         listChecked.includes(order?.product) &&
-                                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={10} />
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={13} />
                                     }</TouchableOpacity>
 
                                     <SectionComponent>
@@ -381,8 +381,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     checkBox: {
-        width: 13,
-        height: 13,
+        width: 16,
+        height: 16,
         borderWidth: 2,
         borderColor: appColors.gray
     }

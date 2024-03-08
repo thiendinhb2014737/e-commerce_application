@@ -21,6 +21,7 @@ import { PayPalButton } from 'react-paypal-button-v2'
 import paymentAPI from '../../../apis/paymentApi'
 import WebView from 'react-native-webview'
 import queryString from 'query-string'
+import { convertPrice } from '../../../utils/validate'
 
 
 
@@ -311,11 +312,14 @@ const Payment = ({ navigation }: any) => {
 
 
             <CardComponent styles={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
-                <TextComponent text={`Tổng tiền hàng: ${priceMemo}`} />
-                <TextComponent text={`Tổng giảm giá: ${priceDiscountMemo}`} />
-                <TextComponent text={`Tổng tiền phí vận chuyển: ${diliveryPriceMemo}`} />
+                <TextComponent text={`Tổng tiền hàng: ${convertPrice(priceMemo)}`} styles={{ padding: 3 }} />
+                <TextComponent text={`Tổng giảm giá: ${convertPrice(priceDiscountMemo)}`} styles={{ padding: 3 }} />
+                <TextComponent text={`Tổng tiền phí vận chuyển: ${convertPrice(diliveryPriceMemo)}`} styles={{ padding: 3 }} />
                 <CardComponent styles={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
-                    <TextComponent text={`Tổng thanh toán: ${totalPriceMemo}`} />
+                    <RowComponent>
+                        <TextComponent text={`Tổng thanh toán: `} styles={{ fontSize: 16 }} />
+                        <TextComponent text={`${convertPrice(totalPriceMemo)}`} styles={{ fontSize: 16 }} color='coral' />
+                    </RowComponent>
                 </CardComponent>
 
             </CardComponent>

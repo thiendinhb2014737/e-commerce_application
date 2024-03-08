@@ -15,7 +15,7 @@ const TypeProduct = ({ name, navigation }: any) => {
             }}
         >
 
-            <TextComponent text={name} title size={14} font={fontFamilies.regular} />
+            <TextComponent text={name} title size={15} font={fontFamilies.regular} />
         </TouchableOpacity>
     )
 }

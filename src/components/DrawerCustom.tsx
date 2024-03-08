@@ -9,12 +9,13 @@ import { globalStyles } from '../styles/globalStyles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fontFamilies } from '../constants/fontFamilies';
+import Zocial from 'react-native-vector-icons/Zocial';
 const DrawerCustom = ({ navigation }: any) => {
     //Lay user
     const user = useSelector(authSelector);
     //console.log(user)
     const dispatch = useDispatch();
-    const size = 20;
+    const size = 25;
     const color = appColors.gray;
     const profileMenu = [
         {
@@ -89,7 +90,7 @@ const DrawerCustom = ({ navigation }: any) => {
                 )}
                 <TextComponent text={user.email} title size={18} font={fontFamilies.regular} />
             </TouchableOpacity>
-            <FlatList
+            {/* <FlatList
                 showsVerticalScrollIndicator={false}
                 data={profileMenu}
                 style={{ flex: 1, marginVertical: 20 }}
@@ -112,7 +113,65 @@ const DrawerCustom = ({ navigation }: any) => {
                         />
                     </RowComponent>
                 )}
-            />
+            /> */}
+            <SpaceComponent height={30} />
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.closeDrawer();
+
+                    navigation.navigate('Profile', {
+                        screen: 'ProfileScreen',
+                    });
+                }}>
+                <RowComponent styles={[localStyles.listItem]}>
+                    <User size={size} color={color} />
+                    <TextComponent text={'Tài khoản của tôi'} styles={localStyles.listItemText} />
+                </RowComponent>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.closeDrawer();
+
+                    navigation.navigate('Cart', {
+                        screen: 'CartScreen',
+                    });
+                }}>
+                <RowComponent styles={[localStyles.listItem]}>
+                    <Zocial name='cart' size={size} color={color} />
+                    <TextComponent text={'Giỏ hàng'} styles={localStyles.listItemText} />
+                </RowComponent>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.closeDrawer();
+                    navigation.navigate('Order', {
+                        screen: 'OrderScreen',
+                    });
+                }}>
+                <RowComponent styles={[localStyles.listItem]}>
+                    <MaterialCommunityIcons name='file-document-outline' size={size} color={color} />
+                    <TextComponent text={'Lịch sử mua hàng'} styles={localStyles.listItemText} />
+                </RowComponent>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.closeDrawer();
+                    navigation.navigate('Profile', {
+                        screen: 'ProfileScreen',
+                    });
+                }}>
+                <RowComponent styles={[localStyles.listItem]}>
+                    <Setting2 size={size} color={color} />
+                    <TextComponent text={'Cài đặt'} styles={localStyles.listItemText} />
+                </RowComponent>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleSignOut()}>
+                <RowComponent styles={[localStyles.listItem]}>
+                    <Logout size={size} color={color} />
+                    <TextComponent text={'Đăng xuất'} styles={localStyles.listItemText} />
+                </RowComponent>
+            </TouchableOpacity>
+            <SpaceComponent height={350} />
             <RowComponent justify="flex-start">
                 <TouchableOpacity
                     style={[

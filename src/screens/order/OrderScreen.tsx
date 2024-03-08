@@ -126,9 +126,16 @@ const OrderScreen = ({ navigation }: any) => {
                 {data?.map((order: any) => {
                     return (
                         <CardComponent key={order?._id} >
-                            <TextComponent text={`Trạng thái đơn hàng`} />
-                            <TextComponent text={`Tổng giảm giá: ${order.statusOder}`} />
-                            <TextComponent text={`Tổng tiền phí vận chuyển: ${order.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}`} />
+                            <TextComponent text={`Trạng thái đơn hàng:`} />
+                            <RowComponent>
+                                <TextComponent text={`Trạng thái đơn hàng: `} />
+                                <TextComponent text={`${order.statusOder}`} color='blue' />
+                            </RowComponent>
+                            <RowComponent>
+                                <TextComponent text={`Tổng tiền phí vận chuyển: `} />
+                                <TextComponent text={`${order.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}`} color='blue' />
+                            </RowComponent>
+
                             <CardComponent>
                                 {order?.orderItems.map((item: any) => {
                                     return (
@@ -143,14 +150,22 @@ const OrderScreen = ({ navigation }: any) => {
                                                 )
                                                 }
                                                 <SectionComponent>
-                                                    <TextComponent text={`${item?.name} (x${item?.amount})`} />
-                                                    <TextComponent text={`Tổng tiền : ${convertPrice(order.totalPrice)}`} />
-                                                    <TextComponent text={`Ngày đặt hàng : ${order.createOrderdAt}`} />
+                                                    <TextComponent text={`${item?.name} (x${item?.amount})`} styles={{ paddingBottom: 4, fontSize: 12 }} />
+                                                    <RowComponent>
+                                                        <TextComponent text={`Giá: `} styles={{ fontSize: 12 }} />
+                                                        <TextComponent text={`${convertPrice(item.price)}`} styles={{ fontSize: 12 }} />
+                                                    </RowComponent>
+
                                                 </SectionComponent>
                                             </RowComponent>
                                         </View>
                                     )
                                 })}
+                                <RowComponent>
+                                    <TextComponent text={`Tổng thanh toán: `} />
+                                    <TextComponent text={`${convertPrice(order.totalPrice)}`} color='coral' />
+                                </RowComponent>
+                                <TextComponent text={`Ngày đặt hàng : ${order.createOrderdAt}`} />
 
 
                             </CardComponent>

@@ -103,12 +103,21 @@ const OrderDetails = ({ navigation, route }: any) => {
 
             <CardComponent >
                 <TextComponent text={`Trạng thái đơn hàng:`} />
-                <TextComponent text={`Trạng thái đơn hàng: ${data?.statusOder}`} />
-                <TextComponent text={`Trạng thái thanh toán: ${data.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}`} />
+                <RowComponent>
+                    <TextComponent text={`Trạng thái đơn hàng: `} />
+                    <TextComponent text={`${data?.statusOder}`} color='blue' />
+                </RowComponent>
+                <RowComponent>
+                    <TextComponent text={`Trạng thái thanh toán: `} />
+                    <TextComponent text={`${data?.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}`} color='blue' />
+                </RowComponent>
                 <TextComponent text={`Tổng tiền phí vận chuyển: ${convertPrice(data?.shippingPrice)}`} />
-                <TextComponent text={`Ngày đặt hàng : ${data.createOrderdAt}`} />
+                <TextComponent text={`Ngày đặt hàng : ${data?.createOrderdAt}`} />
                 <CardComponent styles={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
-                    <TextComponent text={`Tổng thanh toán: ${convertPrice(data?.totalPrice)}`} />
+                    <RowComponent>
+                        <TextComponent text={`Tổng thanh toán: `} />
+                        <TextComponent text={`${convertPrice(data?.totalPrice)}`} color='coral' />
+                    </RowComponent>
                 </CardComponent>
             </CardComponent>
 
@@ -122,7 +131,7 @@ const OrderDetails = ({ navigation, route }: any) => {
             {data?.orderItems?.map((order: any) => {
                 if (order?.product !== '') {
                     return (
-                        <CardComponent key={order?.product} >
+                        <CardComponent key={order?.product} styles={{ paddingBottom: 0 }} >
                             <RowComponent justify='space-between' >
                                 <SectionComponent>
                                     {order?.image ?
