@@ -15,6 +15,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useDispatch, useSelector } from 'react-redux'
 import { authSelector } from '../../redux/reducers/authReducer'
 import { addOrderProduct, orderSelector } from '../../redux/reducers/orderReducer'
+import { convertPrice } from '../../utils/validate'
 
 
 const ProductDetails = ({ navigation, route }: any) => {
@@ -25,18 +26,13 @@ const ProductDetails = ({ navigation, route }: any) => {
     const [size, setSize] = useState('')
     const [numberProduct, setNumberProduct] = useState(1)
     const user = useSelector(authSelector)
-
+    const [isLoading, setIsLoading] = useState(false)
     const order = useSelector(orderSelector)
 
 
     const [errorLimitOrder, setErrorLimitOrder] = useState(false)
-    // const navigate = useNavigate()
-    // const location = useLocation()
-    const dispatch = useDispatch()
 
-    // const onChange = (value) => {
-    //     setNumberProduct(Number(value))
-    // }
+    const dispatch = useDispatch()
 
     const fetchGetDetailsProduct = async (context: any) => {
         const id = context?.queryKey && context?.queryKey[1]
@@ -51,10 +47,10 @@ const ProductDetails = ({ navigation, route }: any) => {
         queryFn: fetchGetDetailsProduct, enabled: !!ProductID
     })
 
-    console.log(productDetails?.name)
-    console.log(size)
-    console.log(numberProduct)
-    console.log(order)
+    // console.log(productDetails?.name)
+    // console.log(size)
+    // console.log(numberProduct)
+    // console.log(order)
 
     // useEffect(() => {
     //     initFacebookSDK()
@@ -221,7 +217,7 @@ const ProductDetails = ({ navigation, route }: any) => {
                     <TextComponent text={`| (Đã bán ${productDetails?.selled})`} styles={{ paddingRight: 20 }} />
                 </RowComponent>
                 <SpaceComponent height={6} />
-                <TextComponent text={`Giá bán: ${productDetails?.price} VNĐ`} styles={{ fontSize: 16 }} />
+                <TextComponent text={`Giá bán: ${convertPrice(productDetails?.price)}`} styles={{ fontSize: 16 }} />
                 <SpaceComponent height={6} />
 
                 <RowComponent>
@@ -258,7 +254,7 @@ const ProductDetails = ({ navigation, route }: any) => {
             </CardComponent>
             <ButtonComponent text='MUA NGAY' type='primary' onPress={handleAddOrderProduct} />
 
-            {/* <LoadingModal visible={isLoading} /> */}
+            <LoadingModal visible={isLoading} />
         </View>
     )
 }

@@ -3,6 +3,7 @@ import React from 'react'
 import { CardComponent, RowComponent, SectionComponent, TextComponent } from '.';
 import { Star, Star1, StarSlash } from 'iconsax-react-native';
 import { appColors } from '../constants/appColors';
+import { convertPrice } from '../utils/validate';
 
 interface Props {
     countInStock: number,
@@ -44,12 +45,12 @@ const CardItem = (props: Props) => {
                     <RowComponent>
                         <TextComponent text={String(rating)} styles={{ fontSize: 12 }} />
                         <Star1 size={17} color='orange' />
-                        <TextComponent text={`- ${String(discount)} %`} styles={{ fontSize: 12 }} />
+                        <TextComponent text={` (- ${String(discount)} %)`} styles={{ fontSize: 12 }} />
                     </RowComponent>
-                    <TextComponent text={`Da ban ${String(selled)}`} styles={{ fontSize: 12 }} />
+                    <TextComponent text={`Đã bán ${String(selled)}`} styles={{ fontSize: 12 }} />
                 </RowComponent>
                 <RowComponent justify='center' >
-                    <TextComponent text={`Giá: ${String(price)}`} styles={{ fontSize: 12 }} />
+                    <TextComponent text={`Giá: ${convertPrice(price)}`} styles={{ fontSize: 12 }} />
 
                 </RowComponent>
             </SectionComponent>

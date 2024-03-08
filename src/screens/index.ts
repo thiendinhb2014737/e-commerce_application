@@ -5,7 +5,10 @@ import SignUpScreen from "./auth/SignUpScreen";
 import Verification from "./auth/Verification";
 import CartScreen from "./cart/CartScreen";
 import HomeScreen from "./home/HomeScreen";
+import Payment from "./home/payment/Payment";
 import MapScreen from "./map/MapScreen";
+import OrderDetails from "./order/OrderDetails";
+import OrderScreen from "./order/OrderScreen";
 import ProductDetails from "./product/ProductDetails";
 import SearchProduct from "./product/SearchProduct";
 import TypeProduct from "./product/TypeProduct";
@@ -23,5 +26,8 @@ export {
     ProfileScreen,
     SearchProduct,
     TypeProduct,
-    ProductDetails
+    ProductDetails,
+    Payment,
+    OrderScreen,
+    OrderDetails
 }

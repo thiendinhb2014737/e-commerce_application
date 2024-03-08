@@ -55,7 +55,7 @@ const orderSlice = createSlice({
     },
     reducers: {
         addOrderProduct: (state, action) => {
-            console.log(state, action)
+            //console.log(state, action)
             const { orderItem } = action.payload
             const { userID } = action.payload
 
@@ -76,7 +76,7 @@ const orderSlice = createSlice({
         },
         increaseAmount: (state, action) => {
             const { idProduct } = action.payload
-            console.log('idProduct', idProduct)
+            //console.log('idProduct', idProduct)
             const itemOrder = state?.orderData?.orderItems?.find((item) => item?.product === idProduct)
             const itemOrderSelected = state?.orderData.orderItemsSelected?.find((item) => item?.product === idProduct)
             if (itemOrder) {

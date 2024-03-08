@@ -1,11 +1,11 @@
-import { View, Text, Button, StatusBar, Platform, TouchableOpacity, FlatList, ScrollView } from 'react-native'
+import { View, Text, Button, StatusBar, Platform, TouchableOpacity, FlatList, ScrollView, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
 import { authReducer, authSelector, removeAuth } from '../../redux/reducers/authReducer'
 import { globalStyles } from '../../styles/globalStyles'
 import { appColors } from '../../constants/appColors'
-import { ButtonComponent, CardComponent, CategoriesList, CircleComponent, RowComponent, SectionComponent, SpaceComponent, TagBarComponent, TextComponent } from '../../components'
+import { ButtonComponent, CardComponent, CategoriesList, CircleComponent, EventItem, RowComponent, SectionComponent, SpaceComponent, TagBarComponent, TextComponent } from '../../components'
 import { HambergerMenu, Notification, SearchNormal1, Sort, Star } from 'iconsax-react-native'
 import { fontFamilies } from '../../constants/fontFamilies'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -28,8 +28,9 @@ const HomeScreen = ({ navigation }: any) => {
     const [isLoading, setIsLoading] = useState(false)
     const [search, setSearch] = useState('')
     const [inputSearch, setInputSearch] = useState('')
-
     const searchDebounce = useDebounce(inputSearch, 100)
+
+
 
     const fetchAllTypeProduct = async () => {
         const api = `/get-all-type`;
@@ -43,14 +44,12 @@ const HomeScreen = ({ navigation }: any) => {
         if (search?.length > 0) {
             setIsLoading(true)
             const api = `/get-all?limit=${limit}&filter=name&filter=${search}&sort=desc&sort=createdAt`;
-
             const res = await productAPI.HandleProduct(api, { limit, search }, 'get')
             setIsLoading(false)
             return res.data
         } else {
             setIsLoading(true)
             const api = `/get-all?limit=${limit}&sort=desc&sort=createdAt`;
-
             const res = await productAPI.HandleProduct(api, { limit }, 'get')
             setIsLoading(false)
             return res.data
@@ -65,6 +64,7 @@ const HomeScreen = ({ navigation }: any) => {
 
 
     useEffect(() => {
+        fetchProductAll
         fetchAllTypeProduct()
     }, [])
 
@@ -72,8 +72,7 @@ const HomeScreen = ({ navigation }: any) => {
         setInputSearch(search)
     }
 
-    // console.log('search', search)
-    // console.log('inputSearch', inputSearch)
+
     return (
         <View style={[globalStyles.container]}>
 
@@ -104,6 +103,7 @@ const HomeScreen = ({ navigation }: any) => {
                                     size={18}
                                     color={appColors.white}
                                 />
+
                             </RowComponent>
                             <TextComponent
                                 text=""
@@ -150,21 +150,28 @@ const HomeScreen = ({ navigation }: any) => {
                             onEnd={() => onSearch()}
                         />
                     </RowComponent>
-
-                    <SpaceComponent height={24} />
                 </View>
             </View>
 
-
+            <Image
+                source={require('../../assets/images/slider1.png')}
+                style={{
+                    width: 600,
+                    height: 80,
+                    marginBottom: 10,
+                }}
+            />
             <ContainerComponent isImageBackground isScroll>
-                <RowComponent justify='center' styles={{ gap: 20 }} >
-                    {typeProduct.map((item) => {
-                        return (
-                            <TypeProduct name={item} key={item} navigation={navigation} />
-                        )
-                    })}
+                <CardComponent styles={{ margin: 0 }}>
+                    <RowComponent justify='center' styles={{ gap: 20 }} >
+                        {typeProduct.map((item) => {
+                            return (
+                                <TypeProduct name={item} key={item} navigation={navigation} />
+                            )
+                        })}
 
-                </RowComponent>
+                    </RowComponent>
+                </CardComponent>
 
                 <RowComponent styles={{ display: 'flex', gap: 5, marginTop: 20, flexWrap: 'wrap' }}>
                     {products?.map((product: any) => {

@@ -31,7 +31,7 @@ const ContainerComponent = (props: Props) => {
 
     const headerComponent = () => {
         return (
-            <View style={{ flex: 1, paddingTop: 30 }}>
+            <View style={{ flex: 1, paddingTop: 5 }}>
                 {(title || back) && (
                     <RowComponent
                         styles={{
@@ -68,7 +68,7 @@ const ContainerComponent = (props: Props) => {
     return isImageBackground ? (
         <ImageBackground
             source={require('../../../assets/images/bg_white.png')}
-            style={{ flex: 1 }}
+            style={{ flex: 1, }}
             imageStyle={{ flex: 1 }}>
             <SafeAreaView style={{ flex: 1 }}>
                 {headerComponent()}

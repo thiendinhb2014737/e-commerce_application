@@ -4,6 +4,7 @@ import CategoriesList from "./CategoriesList";
 import CircleComponent from "./CircleComponent";
 import ContainerComponent from "./ContainerComponent";
 import DrawerCustom from "./DrawerCustom";
+import EventItem from "./EventItem";
 import InputComponent from "./InputComponent";
 import RowComponent from "./RowComponent";
 import SectionComponent from "./SectionComponent";
@@ -25,5 +26,6 @@ export {
     TagComponent,
     CategoriesList,
     TagBarComponent,
-    CardComponent
+    CardComponent,
+    EventItem
 }

@@ -8,6 +8,7 @@ import { RowComponent, SpaceComponent, TextComponent } from '.';
 import { globalStyles } from '../styles/globalStyles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { fontFamilies } from '../constants/fontFamilies';
 const DrawerCustom = ({ navigation }: any) => {
     //Lay user
     const user = useSelector(authSelector);
@@ -86,7 +87,7 @@ const DrawerCustom = ({ navigation }: any) => {
                         />
                     </View>
                 )}
-                <TextComponent text={user.email} title size={18} />
+                <TextComponent text={user.email} title size={18} font={fontFamilies.regular} />
             </TouchableOpacity>
             <FlatList
                 showsVerticalScrollIndicator={false}
@@ -99,9 +100,10 @@ const DrawerCustom = ({ navigation }: any) => {
                             item.key === 'SignOut'
                                 ? () => handleSignOut()
                                 : () => {
-                                    console.log(item.key);
+                                    //console.log(item.key);
                                     navigation.closeDrawer();
                                 }
+
                         }>
                         {item.icon}
                         <TextComponent

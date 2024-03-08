@@ -14,6 +14,8 @@ import DrawerNavigator from './DrawerNavigator'
 import { useSelector } from 'react-redux'
 import { orderSelector } from '../redux/reducers/orderReducer'
 import { fontFamilies } from '../constants/fontFamilies'
+import OrderNavigator from './OrderNavigator'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 //42:20
@@ -58,8 +60,8 @@ const TabNavigator = () => {
                                 </View>
                             </CircleComponent>
                         break;
-                    case 'Map':
-                        icon = <Location size={size} variant="Bold" color={color} />;
+                    case 'Order':
+                        icon = <MaterialCommunityIcons name='file-document-outline' size={size} color={color} />;
                         break;
                     case 'Profile':
                         icon = <User size={size} variant="Bold" color={color} />;
@@ -89,6 +91,7 @@ const TabNavigator = () => {
             {/* <Tab.Screen name='Map' component={MapNavigator} /> */}
             {/* Phần add 13:49 phan 13 */}
             <Tab.Screen name='Cart' component={CartNavigator} />
+            <Tab.Screen name='Order' component={OrderNavigator} />
             <Tab.Screen name='Profile' component={ProfileNavigator} />
         </Tab.Navigator>
     )

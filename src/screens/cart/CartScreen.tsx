@@ -17,6 +17,8 @@ import authenticationAPI from '../../apis/authApi'
 import { useQuery } from '@tanstack/react-query'
 import InputFormConponent from '../profile/InputFormComponent/InputFormConponent'
 import StepComponent from './StepComponent/StepComponent'
+import ContainerComponent from '../home/ContainerComponent/ContainerComponent'
+import { convertPrice } from '../../utils/validate'
 
 const CartScreen = ({ navigation }: any) => {
     const order = useSelector(orderSelector)
@@ -58,7 +60,7 @@ const CartScreen = ({ navigation }: any) => {
     }, [listChecked])
 
 
-    console.log(order?.orderItemsSelected)
+    //console.log(order?.orderItemsSelected)
 
     const priceMemo = useMemo(() => {
         const result = order?.orderItemsSelected?.reduce((total: any, cur: any) => {
@@ -157,6 +159,28 @@ const CartScreen = ({ navigation }: any) => {
         '25.000 VNĐ',
         'FREE SHIP'
     ]
+    const handleAddCard = () => {
+        //console.log('user', user)
+        if (order?.orderItemsSelected?.length === 1 || 0) {
+            Alert.alert('Vui lòng chọn sản phẩm!');
+        } else if (!name || !phone || !address) {
+            setIsOpenModalUpdateInfo(true)
+        } else {
+            // if (listChecked) {
+            //     const List: any = []
+            //     listChecked?.map((item: any) => {
+            //         if (item !== "") {
+            //             List.push(item)
+            //         }
+
+            //     })
+            //     handleDeleteOrder(List)
+            // }
+            navigation.navigate('Payment')
+        }
+    }
+    console.log(listChecked)
+
     return (
         <View style={[globalStyles.container]}>
 
@@ -217,112 +241,104 @@ const CartScreen = ({ navigation }: any) => {
                     </RowComponent>
                     <SpaceComponent height={24} />
 
-                    {/* <RowComponent justify='center' >
-
-                    <InputSearchConponent
-                        styles={{}}
-                        placeholder={productDetails?.name}
-                        onChange={val => setSearch(val)}
-                    />
-                </RowComponent> */}
-
-                    <SpaceComponent height={24} />
                 </View>
             </View>
-            <StepComponent items={itemsDelivery} current={diliveryPriceMemo === 35000 ? 0 : diliveryPriceMemo === 25000 ? 1 : order?.orderItemsSelected?.length === 0 ? 0 : 2} />
-            <CardComponent>
-                <RowComponent>
-                    <Text style={{ fontSize: 14, width: 260 }} numberOfLines={1} ellipsizeMode='tail'>{`Địa chỉ giao hàng: ${detailsUser?.address}`}</Text>
-                    <TouchableOpacity onPress={handleChangeAddress}>
-                        <TextComponent text=' (Chỉnh sửa)' color={appColors.primary} />
-                    </TouchableOpacity>
-                </RowComponent>
-            </CardComponent>
-
-
-            <CardComponent styles={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
-                <TextComponent text={`Tổng tiền hàng: ${priceMemo}`} />
-                <TextComponent text={`Tổng giảm giá: ${priceDiscountMemo}`} />
-                <TextComponent text={`Tổng tiền phí vận chuyển: ${diliveryPriceMemo}`} />
-                <CardComponent styles={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
-                    <TextComponent text={`Tổng thanh toán: ${totalPriceMemo}`} />
+            <ContainerComponent isImageBackground isScroll>
+                <StepComponent items={itemsDelivery} current={diliveryPriceMemo === 35000 ? 0 : diliveryPriceMemo === 25000 ? 1 : order?.orderItemsSelected?.length === 0 ? 0 : 2} />
+                <CardComponent>
+                    <RowComponent>
+                        <Text style={{ fontSize: 14, width: 260 }} numberOfLines={1} ellipsizeMode='tail'>{`Địa chỉ giao hàng: ${detailsUser?.address}`}</Text>
+                        <TouchableOpacity onPress={handleChangeAddress}>
+                            <TextComponent text=' (Chỉnh sửa)' color={appColors.primary} />
+                        </TouchableOpacity>
+                    </RowComponent>
                 </CardComponent>
 
-            </CardComponent>
 
-            <CardComponent>
-                <RowComponent justify='space-between'>
-                    <TouchableOpacity style={[styles.checkBox]} onPress={() => handleOnchangeCheckAll(true)}>{
-                        listChecked?.length === order?.orderItems?.length &&
-                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={10} />
-                    }</TouchableOpacity>
+                <CardComponent styles={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
+                    <TextComponent text={`Tổng tiền hàng: ${convertPrice(priceMemo)}`} />
+                    <TextComponent text={`Tổng giảm giá: ${convertPrice(priceDiscountMemo)}`} />
+                    <TextComponent text={`Tổng tiền phí vận chuyển: ${convertPrice(diliveryPriceMemo)}`} />
+                    <CardComponent styles={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
+                        <TextComponent text={`Tổng thanh toán: ${convertPrice(totalPriceMemo)}`} color='red' />
+                    </CardComponent>
 
-                    <TextComponent text={`Tất cả (${order?.orderItems?.length - 1}sản phẩm)`} />
-                    <TextComponent text='Đơn giá' />
-                    <TextComponent text='Số lượng' />
-                    <TouchableOpacity onPress={handleRemoveAllOrder}><TextComponent text='Xóa tất cả' /></TouchableOpacity>
-                </RowComponent>
-            </CardComponent>
+                </CardComponent>
 
+                <CardComponent>
+                    <RowComponent justify='space-between'>
+                        <TouchableOpacity style={[styles.checkBox]} onPress={() => handleOnchangeCheckAll(true)}>{
+                            listChecked?.length === order?.orderItems?.length &&
+                            <AntDesign style={[styles.check]} name='check' color={appColors.text} size={10} />
+                        }</TouchableOpacity>
 
-            {order?.orderItems?.map((order: any) => {
-                if (order?.product !== '') {
-                    return (
-                        <CardComponent key={order?.product} >
-                            <RowComponent justify='space-between' >
-                                <TouchableOpacity style={[styles.checkBox]} onPress={() => onChange(order?.product)}>{
-                                    listChecked.includes(order?.product) &&
-                                    <AntDesign style={[styles.check]} name='check' color={appColors.text} size={10} />
-                                }</TouchableOpacity>
-
-                                <SectionComponent>
-                                    {order?.image ?
-                                        (<Image source={{ uri: order?.image }} style={{ width: 60, height: 60 }} />)
-                                        : (
-                                            <View
-                                                style={{ backgroundColor: appColors.white }}>
-                                                <TextComponent
-                                                    title
-                                                    size={22}
-                                                    color={appColors.white}
-                                                    text={
-                                                        order?.name
-                                                            ? order?.name
-                                                                .split(' ')
-                                                            [order?.name.split(' ').length - 1].substring(0, 1)
-                                                            : ''
-                                                    }
-                                                />
-                                            </View>
-                                        )
-                                    }
-
-                                    <Text style={{ fontSize: 10, width: 60 }} numberOfLines={1} ellipsizeMode='tail'>{order?.name}</Text>
-                                    <TextComponent styles={{ fontSize: 10 }} text={`  size(${order.size})`} />
-
-                                </SectionComponent>
+                        <TextComponent text={`Tất cả (${order?.orderItems?.length - 1} sản phẩm)`} />
+                        <TextComponent text='Đơn giá' />
+                        <TextComponent text='Số lượng' />
+                        <TouchableOpacity onPress={handleRemoveAllOrder}><TextComponent text='Xóa tất cả' /></TouchableOpacity>
+                    </RowComponent>
+                </CardComponent>
 
 
-                                <TextComponent text={order.price} />
-                                <RowComponent>
+                {order?.orderItems?.map((order: any) => {
+                    if (order?.product !== '') {
+                        return (
+                            <CardComponent key={order?.product} >
+                                <RowComponent justify='space-between' >
+                                    <TouchableOpacity style={[styles.checkBox]} onPress={() => onChange(order?.product)}>{
+                                        listChecked.includes(order?.product) &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={10} />
+                                    }</TouchableOpacity>
 
-                                    <TouchableOpacity style={{ padding: 6, borderWidth: 0.5 }} onPress={() => handleChangeCount('decrease', order?.product, order?.amount === 1)}>
-                                        <AntDesign name='minus' color={appColors.text} size={18} />
-                                    </TouchableOpacity>
-                                    <TextComponent text={String(order.amount)} styles={{ padding: 7.8, fontSize: 12, borderWidth: 0.5 }} />
-                                    <TouchableOpacity style={{ padding: 6, borderWidth: 0.5 }} onPress={() => handleChangeCount('increase', order?.product, order?.amount === order?.countInStock)}>
-                                        <AntDesign name='plus' color={appColors.text} size={18} />
-                                    </TouchableOpacity>
+                                    <SectionComponent>
+                                        {order?.image ?
+                                            (<Image source={{ uri: order?.image }} style={{ width: 60, height: 60 }} />)
+                                            : (
+                                                <View
+                                                    style={{ backgroundColor: appColors.white }}>
+                                                    <TextComponent
+                                                        title
+                                                        size={22}
+                                                        color={appColors.white}
+                                                        text={
+                                                            order?.name
+                                                                ? order?.name
+                                                                    .split(' ')
+                                                                [order?.name.split(' ').length - 1].substring(0, 1)
+                                                                : ''
+                                                        }
+                                                    />
+                                                </View>
+                                            )
+                                        }
+
+                                        <Text style={{ fontSize: 10, width: 60 }} numberOfLines={1} ellipsizeMode='tail'>{order?.name}</Text>
+                                        <TextComponent styles={{ fontSize: 10 }} text={`  size(${order.size})`} />
+
+                                    </SectionComponent>
+
+
+                                    <TextComponent text={`${convertPrice(order.price)}`} />
+                                    <RowComponent>
+
+                                        <TouchableOpacity style={{ padding: 6, borderWidth: 0.5 }} onPress={() => handleChangeCount('decrease', order?.product, order?.amount === 1)}>
+                                            <AntDesign name='minus' color={appColors.text} size={18} />
+                                        </TouchableOpacity>
+                                        <TextComponent text={String(order.amount)} styles={{ padding: 7.8, fontSize: 12, borderWidth: 0.5 }} />
+                                        <TouchableOpacity style={{ padding: 6, borderWidth: 0.5 }} onPress={() => handleChangeCount('increase', order?.product, order?.amount === order?.countInStock)}>
+                                            <AntDesign name='plus' color={appColors.text} size={18} />
+                                        </TouchableOpacity>
+                                    </RowComponent>
+                                    <AntDesign name='delete' color={appColors.text} size={18} onPress={() => handleDeleteOrder(order?.product)} />
                                 </RowComponent>
-                                <AntDesign name='delete' color={appColors.text} size={18} onPress={() => handleDeleteOrder(order?.product)} />
-                            </RowComponent>
-                        </CardComponent>
+                            </CardComponent>
 
-                    )
-                }
-            })}
+                        )
+                    }
+                })}
 
-            <ButtonComponent text='Mua ngay' type='primary' />
+                <ButtonComponent text='Mua ngay' type='primary' onPress={() => handleAddCard()} />
+            </ContainerComponent>
             <Modal visible={isOpenModalUpdateInfo}
                 onRequestClose={() => {
                     setIsOpenModalUpdateInfo(!isOpenModalUpdateInfo);

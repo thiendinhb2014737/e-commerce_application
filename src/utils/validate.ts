@@ -17,3 +17,12 @@ export const getBase64 = (file: any) =>
         reader.onload = () => resolve(reader.result);
         reader.onerror = error => reject(error);
     });
+
+export const convertPrice = (price: any) => {
+    try {
+        const result = price?.toLocaleString().replaceAll(',', '.')
+        return `${result} VNĐ`
+    } catch (error) {
+        return null
+    }
+}
