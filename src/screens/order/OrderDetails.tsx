@@ -156,7 +156,11 @@ const OrderDetails = ({ navigation, route }: any) => {
                                     }
 
                                     <Text style={{ fontSize: 10, width: 60 }} numberOfLines={1} ellipsizeMode='tail'>{order?.name}</Text>
-
+                                    <TextComponent styles={{ fontSize: 10 }} text={`size (${order?.size})`} />
+                                    <RowComponent>
+                                        <TextComponent styles={{ fontSize: 10 }} text={`màu sắc `} />
+                                        <TextComponent styles={{ width: 13, height: 13, borderWidth: 0.5, borderColor: appColors.gray, backgroundColor: `${order?.color}` }} text={''} />
+                                    </RowComponent>
 
                                 </SectionComponent>
 

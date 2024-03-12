@@ -14,6 +14,7 @@ const initialState = {
         product: '',
         discount: '',
         size: '',
+        color: '',
         countInStock: 0
     }
 
@@ -27,6 +28,7 @@ const initialState = {
             product: '',
             discount: '',
             size: '',
+            color: '',
             countInStock: 0,
         }
 
