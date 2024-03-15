@@ -40,6 +40,9 @@ const Payment = ({ navigation }: any) => {
     const [accessToken, setAccessToken]: any = useState(null)
     const [isLoading, setLoading] = useState(false)
     const [isSuccessOrder, setIsSuccessOrder] = useState(false)
+    const a = Math.floor(Math.random() * 10000)
+    const maDH = `DINGVOG${a}`
+
 
     const getDetailsUser = async () => {
         const api = `/get-details/${user.id}`;
@@ -133,6 +136,7 @@ const Payment = ({ navigation }: any) => {
                     shippingPrice: diliveryPriceMemo,
                     totalPrice: totalPriceMemo,
                     user: user?.id,
+                    maDH: maDH,
                     createOrderdAt: String(date)
                 },
                 'post',
@@ -212,6 +216,7 @@ const Payment = ({ navigation }: any) => {
                         totalPrice: totalPriceMemo,
                         user: user?.id,
                         isPaid: true,
+                        maDH: maDH,
                         createOrderdAt: String(date),
                     },
                     'post',

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { globalStyles } from '../../styles/globalStyles'
 import { appColors } from '../../constants/appColors'
 import { ButtonComponent, CardComponent, CircleComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '../../components'
-import { HambergerMenu, Notification } from 'iconsax-react-native'
+import { HambergerMenu, Notification, SearchNormal1 } from 'iconsax-react-native'
 import { fontFamilies } from '../../constants/fontFamilies'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux'
@@ -16,6 +16,8 @@ import { LoadingModal } from '../../modals'
 import ButtonOrderComponent from './ButtonOrderComponent/ButtonOrderComponent'
 import { useMutationHooks } from '../../hook/useMutationHook'
 import { convertPrice } from '../../utils/validate'
+import InputSearchConponent from '../home/InputSearchComponent/InputSearchConponent'
+import { useDebounce } from '../../hook/useDebounce'
 
 
 
@@ -23,18 +25,33 @@ const OrderScreen = ({ navigation }: any) => {
     const user = useSelector(authSelector)
     const [limit, setLimit] = useState(2)
     const [isLoading, setIsLoading] = useState(false)
+    const [search, setSearch] = useState('')
+    const [inputSearch, setInputSearch] = useState('')
+    const searchDebounce = useDebounce(inputSearch, 100)
 
     const fetchMyOrder = async (context: any) => {
         setIsLoading(true)
         const limit = context?.queryKey && context?.queryKey[1]
-        const api = `/get-all-order/${user.id}?sort=desc&sort=createdAt&limit=${limit}`;
-        const res = await orderAPI.HandleOrder(api, 'get')
-        setIsLoading(false)
-        return res.data
+        const search = context?.queryKey && context?.queryKey[2]
+        if (search?.length > 0) {
+            setIsLoading(true)
+            const api = `/get-all-order/${user.id}?limit=${limit}&filter=maDH&filter=${search}&sort=desc&sort=createdAt`;
+            const res = await orderAPI.HandleOrder(api, { limit, search }, 'get')
+            setIsLoading(false)
+            return res.data
+        } else {
+            setIsLoading(true)
+            const api = `/get-all-order/${user.id}?sort=desc&sort=createdAt&limit=${limit}`;
+            const res = await orderAPI.HandleOrder(api, 'get')
+            setIsLoading(false)
+            return res.data
+        }
+
+
     }
 
     const queryOrder = useQuery({
-        queryKey: ['orders', limit],
+        queryKey: ['orders', limit, searchDebounce],
         queryFn: fetchMyOrder,
         enabled: !!user.id
     })
@@ -54,6 +71,9 @@ const OrderScreen = ({ navigation }: any) => {
         Alert.alert("Hủy đơn hàng thành công!")
         return res.data
     }
+    const onSearch = () => {
+        setInputSearch(search)
+    }
 
 
     return (
@@ -63,7 +83,7 @@ const OrderScreen = ({ navigation }: any) => {
             <View
                 style={{
                     backgroundColor: appColors.primary,
-                    height: 100 + (Platform.OS === 'ios' ? 16 : 0),
+                    height: 178 + (Platform.OS === 'ios' ? 16 : 0),
                     borderBottomLeftRadius: 40,
                     borderBottomRightRadius: 40,
                     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 52,
@@ -116,7 +136,22 @@ const OrderScreen = ({ navigation }: any) => {
                     </RowComponent>
                     <SpaceComponent height={24} />
 
+                    <RowComponent justify='center' >
+                        <SectionComponent styles={{ paddingHorizontal: 10, paddingLeft: 0 }}>
+                            <SearchNormal1
+                                variant="TwoTone"
+                                size={24}
+                                color={appColors.white}
+                                style={{ paddingRight: 20 }}
+                            />
+                        </SectionComponent>
 
+                        <InputSearchConponent
+                            placeholder='Nhập nội dung cần tìm....'
+                            onChange={val => setSearch(val)}
+                            onEnd={() => onSearch()}
+                        />
+                    </RowComponent>
 
                     <SpaceComponent height={24} />
                 </View>
@@ -126,6 +161,10 @@ const OrderScreen = ({ navigation }: any) => {
                 {data?.map((order: any) => {
                     return (
                         <CardComponent key={order?._id} >
+                            <RowComponent>
+                                <TextComponent text={`Mã đơn hàng: `} />
+                                <TextComponent text={`${order.maDH}`} color='blue' />
+                            </RowComponent>
                             <TextComponent text={`Trạng thái đơn hàng:`} />
                             <RowComponent>
                                 <TextComponent text={`Trạng thái đơn hàng: `} />

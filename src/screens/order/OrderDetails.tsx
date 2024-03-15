@@ -102,6 +102,10 @@ const OrderDetails = ({ navigation, route }: any) => {
             </CardComponent>
 
             <CardComponent >
+                <RowComponent>
+                    <TextComponent text={`Mã đơn hàng: `} />
+                    <TextComponent text={`${data?.maDH}`} color='blue' />
+                </RowComponent>
                 <TextComponent text={`Trạng thái đơn hàng:`} />
                 <RowComponent>
                     <TextComponent text={`Trạng thái đơn hàng: `} />

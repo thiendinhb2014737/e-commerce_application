@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { authSelector } from '../../redux/reducers/authReducer'
 import { addOrderProduct, orderSelector } from '../../redux/reducers/orderReducer'
 import { convertPrice } from '../../utils/validate'
+import ContainerComponent from '../home/ContainerComponent/ContainerComponent'
 
 
 const ProductDetails = ({ navigation, route }: any) => {
@@ -184,7 +185,7 @@ const ProductDetails = ({ navigation, route }: any) => {
 
                         <InputSearchConponent
                             styles={{}}
-                            placeholder={productDetails?.name}
+                            placeholder={productDetails?.name.toUpperCase()}
                             onChange={val => setSearch(val)}
                         />
                     </RowComponent>
@@ -192,111 +193,111 @@ const ProductDetails = ({ navigation, route }: any) => {
                     <SpaceComponent height={24} />
                 </View>
             </View>
+            <ContainerComponent isImageBackground isScroll>
+                <CardComponent styles={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
+                    {productDetails?.image ?
+                        (<Image source={{ uri: productDetails?.image }} style={{ width: 290, height: 290 }} />)
+                        : (
+                            <View
+                                style={{ backgroundColor: appColors.gray2 }}>
+                                <TextComponent
+                                    title
+                                    size={22}
+                                    color={appColors.white}
+                                    text={
+                                        productDetails?.name
+                                            ? productDetails?.name
+                                                .split(' ')
+                                            [productDetails?.name.split(' ').length - 1].substring(0, 1)
+                                            : ''
+                                    }
+                                />
+                            </View>
+                        )
+                    }
 
-            <CardComponent styles={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
-                {productDetails?.image ?
-                    (<Image source={{ uri: productDetails?.image }} style={{ width: 290, height: 290 }} />)
-                    : (
-                        <View
-                            style={{ backgroundColor: appColors.gray2 }}>
-                            <TextComponent
-                                title
-                                size={22}
-                                color={appColors.white}
-                                text={
-                                    productDetails?.name
-                                        ? productDetails?.name
-                                            .split(' ')
-                                        [productDetails?.name.split(' ').length - 1].substring(0, 1)
-                                        : ''
-                                }
-                            />
-                        </View>
-                    )
-                }
+                </CardComponent>
 
-            </CardComponent>
+                <CardComponent>
+                    <RowComponent justify='flex-start' styles={{ padding: 6, borderWidth: 0.5 }}>
+                        <TextComponent text={`${productDetails?.name}`} styles={{ fontSize: 17, paddingRight: 20 }} />
+                        <TextComponent text={`(-${productDetails?.discount}%)`} styles={{ fontSize: 12, paddingRight: 20 }} />
+                        <TextComponent text={`|  ${productDetails?.rating}`} styles={{ paddingRight: 3, fontSize: 12 }} />
+                        <Star1 size={12} color='orange' />
+                        <TextComponent text={`|  (Đã bán ${productDetails?.selled})`} styles={{ paddingRight: 20, paddingLeft: 20, fontSize: 12 }} />
+                    </RowComponent>
+                    <SpaceComponent height={6} />
+                    <RowComponent>
+                        <TextComponent text={`Giá bán:`} styles={{ fontSize: 14, paddingRight: 10 }} />
+                        <TextComponent text={`${convertPrice(productDetails?.price)}`} styles={{ fontSize: 18 }} />
+                    </RowComponent>
+                    <SpaceComponent height={6} />
 
-            <CardComponent>
-                <RowComponent justify='flex-start' styles={{ padding: 6, borderWidth: 0.5 }}>
-                    <TextComponent text={`${productDetails?.name}`} styles={{ fontSize: 17, paddingRight: 20 }} />
-                    <TextComponent text={`(-${productDetails?.discount}%)`} styles={{ fontSize: 12, paddingRight: 20 }} />
-                    <TextComponent text={`|  ${productDetails?.rating}`} styles={{ paddingRight: 3, fontSize: 12 }} />
-                    <Star1 size={12} color='orange' />
-                    <TextComponent text={`|  (Đã bán ${productDetails?.selled})`} styles={{ paddingRight: 20, paddingLeft: 20, fontSize: 12 }} />
-                </RowComponent>
-                <SpaceComponent height={6} />
-                <RowComponent>
-                    <TextComponent text={`Giá bán:`} styles={{ fontSize: 14, paddingRight: 10 }} />
-                    <TextComponent text={`${convertPrice(productDetails?.price)}`} styles={{ fontSize: 18 }} />
-                </RowComponent>
-                <SpaceComponent height={6} />
+                    <RowComponent>
+                        <TextComponent text='Kích cỡ:' styles={{ paddingRight: 15 }} />
+                        <TouchableOpacity style={[styles.checkBox]} onPress={() => setSize('S')}>{
+                            size === 'S' &&
+                            <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                        }</TouchableOpacity>
+                        <TextComponent text={productDetails?.sizeS} styles={{ padding: 10 }} />
+                        <TouchableOpacity style={[styles.checkBox]} onPress={() => setSize('M')}>{
+                            size === 'M' &&
+                            <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                        }</TouchableOpacity>
+                        <TextComponent text={productDetails?.sizeM} styles={{ padding: 10 }} />
+                        <TouchableOpacity style={[styles.checkBox]} onPress={() => setSize('L')}>{
+                            size === 'L' &&
+                            <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                        }</TouchableOpacity>
+                        <TextComponent text={productDetails?.sizeL} styles={{ padding: 10 }} />
+                        <TouchableOpacity style={[styles.checkBox]} onPress={() => setSize('XL')}>{
+                            size === 'XL' &&
+                            <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                        }</TouchableOpacity>
+                        <TextComponent text={productDetails?.sizeXL} styles={{ padding: 10 }} />
+                    </RowComponent>
 
-                <RowComponent>
-                    <TextComponent text='Kích cỡ:' styles={{ paddingRight: 15 }} />
-                    <TouchableOpacity style={[styles.checkBox]} onPress={() => setSize('S')}>{
-                        size === 'S' &&
-                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
-                    }</TouchableOpacity>
-                    <TextComponent text={productDetails?.sizeS} styles={{ padding: 10 }} />
-                    <TouchableOpacity style={[styles.checkBox]} onPress={() => setSize('M')}>{
-                        size === 'M' &&
-                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
-                    }</TouchableOpacity>
-                    <TextComponent text={productDetails?.sizeM} styles={{ padding: 10 }} />
-                    <TouchableOpacity style={[styles.checkBox]} onPress={() => setSize('L')}>{
-                        size === 'L' &&
-                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
-                    }</TouchableOpacity>
-                    <TextComponent text={productDetails?.sizeL} styles={{ padding: 10 }} />
-                    <TouchableOpacity style={[styles.checkBox]} onPress={() => setSize('XL')}>{
-                        size === 'XL' &&
-                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
-                    }</TouchableOpacity>
-                    <TextComponent text={productDetails?.sizeXL} styles={{ padding: 10 }} />
-                </RowComponent>
+                    <RowComponent>
+                        <TextComponent text='Màu sắc:' styles={{ paddingRight: 10 }} />
+                        <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBe}`, marginRight: 28 }]} onPress={() => setColor('be')}>{
+                            color === 'be' &&
+                            <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                        }</TouchableOpacity>
 
-                <RowComponent>
-                    <TextComponent text='Màu sắc:' styles={{ paddingRight: 10 }} />
-                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBe}`, marginRight: 28 }]} onPress={() => setColor('be')}>{
-                        color === 'be' &&
-                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
-                    }</TouchableOpacity>
+                        <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorWhite}`, marginRight: 28 }]} onPress={() => setColor('white')}>{
+                            color === 'white' &&
+                            <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                        }</TouchableOpacity>
 
-                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorWhite}`, marginRight: 28 }]} onPress={() => setColor('white')}>{
-                        color === 'white' &&
-                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
-                    }</TouchableOpacity>
+                        <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBlack}`, marginRight: 28 }]} onPress={() => setColor('black')}>{
+                            color === 'black' &&
+                            <AntDesign style={[styles.check]} name='check' color={appColors.white} size={20} />
+                        }</TouchableOpacity>
 
-                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBlack}`, marginRight: 28 }]} onPress={() => setColor('black')}>{
-                        color === 'black' &&
-                        <AntDesign style={[styles.check]} name='check' color={appColors.white} size={20} />
-                    }</TouchableOpacity>
+                        <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBlue}`, marginRight: 28 }]} onPress={() => setColor('blue')}>{
+                            color === 'blue' &&
+                            <AntDesign style={[styles.check]} name='check' color={appColors.white} size={20} />
+                        }</TouchableOpacity>
+                    </RowComponent>
+                    <SpaceComponent height={6} />
+                    <TextComponent text={`Số lượng còn lại (${productDetails?.countInStock}) sản phẩm`} />
+                    <SpaceComponent height={6} />
+                    <RowComponent>
+                        <TextComponent text='Số lượng:' styles={{ paddingRight: 10 }} />
+                        <TouchableOpacity style={{ padding: 6, borderWidth: 0.7 }} onPress={() => handleChangeCount('decrease', numberProduct === 1)} >
+                            <AntDesign name='minus' color={appColors.text} size={24} />
+                        </TouchableOpacity>
+                        <TextComponent text={String(numberProduct)} styles={{ padding: 8.5, fontSize: 16, borderWidth: 0.7 }} />
+                        <TouchableOpacity style={{ padding: 6, borderWidth: 0.7 }}>
+                            <AntDesign name='plus' color={appColors.text} size={24} onPress={() => handleChangeCount('increase', numberProduct === productDetails?.countInStock)} />
+                        </TouchableOpacity>
+                    </RowComponent>
 
-                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBlue}`, marginRight: 28 }]} onPress={() => setColor('blue')}>{
-                        color === 'blue' &&
-                        <AntDesign style={[styles.check]} name='check' color={appColors.white} size={20} />
-                    }</TouchableOpacity>
-                </RowComponent>
-                <SpaceComponent height={6} />
-                <TextComponent text={`Số lượng còn lại (${productDetails?.countInStock}) sản phẩm`} />
-                <SpaceComponent height={6} />
-                <RowComponent>
-                    <TextComponent text='Số lượng:' styles={{ paddingRight: 10 }} />
-                    <TouchableOpacity style={{ padding: 6, borderWidth: 0.7 }} onPress={() => handleChangeCount('decrease', numberProduct === 1)} >
-                        <AntDesign name='minus' color={appColors.text} size={24} />
-                    </TouchableOpacity>
-                    <TextComponent text={String(numberProduct)} styles={{ padding: 8.5, fontSize: 16, borderWidth: 0.7 }} />
-                    <TouchableOpacity style={{ padding: 6, borderWidth: 0.7 }}>
-                        <AntDesign name='plus' color={appColors.text} size={24} onPress={() => handleChangeCount('increase', numberProduct === productDetails?.countInStock)} />
-                    </TouchableOpacity>
-                </RowComponent>
-
-                <SpaceComponent height={6} />
-                <TextComponent text={`Mô tả sản phẩm: ${productDetails?.description}`} />
-            </CardComponent>
-            <ButtonComponent text='MUA NGAY' type='primary' onPress={handleAddOrderProduct} />
-
+                    <SpaceComponent height={6} />
+                    <TextComponent text={`Mô tả sản phẩm: ${productDetails?.description}`} />
+                </CardComponent>
+                <ButtonComponent text='MUA NGAY' type='primary' onPress={handleAddOrderProduct} />
+            </ContainerComponent>
             <LoadingModal visible={isLoading} />
         </View>
     )
