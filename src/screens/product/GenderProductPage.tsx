@@ -1,36 +1,39 @@
-import { View, Text, Button, StatusBar, Platform, TouchableOpacity, FlatList, ScrollView, Image } from 'react-native'
+import { View, Text, StatusBar, Platform, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useDispatch, useSelector } from 'react-redux'
-import { authReducer, authSelector, removeAuth } from '../../redux/reducers/authReducer'
 import { globalStyles } from '../../styles/globalStyles'
 import { appColors } from '../../constants/appColors'
-import { ButtonComponent, CardComponent, CategoriesList, CircleComponent, EventItem, RowComponent, SectionComponent, SpaceComponent, TagBarComponent, TextComponent } from '../../components'
-import { HambergerMenu, Notification, SearchNormal1, Sort, Star } from 'iconsax-react-native'
-import { fontFamilies } from '../../constants/fontFamilies'
+import { ButtonComponent, CardComponent, CircleComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '../../components'
+import { HambergerMenu, Notification, SearchNormal1 } from 'iconsax-react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import ProductItem from '../../components/ProductItem'
-import productAPI from '../../apis/productApi'
-import TypeProduct from '../../components/TypeProduct'
-import { useDebounce } from '../../hook/useDebounce'
-import { useQuery } from '@tanstack/react-query'
+import { fontFamilies } from '../../constants/fontFamilies'
+import InputSearchConponent from '../home/InputSearchComponent/InputSearchConponent'
+import ContainerComponent from '../home/ContainerComponent/ContainerComponent'
 import CardItem from '../../components/CardItem'
 import { LoadingModal } from '../../modals'
-import InputFormConponent from '../profile/InputFormComponent/InputFormConponent'
-import InputSearchConponent from './InputSearchComponent/InputSearchConponent'
-import ContainerComponent from './ContainerComponent/ContainerComponent'
-const HomeScreen = ({ navigation }: any) => {
-    // const searchProduct = useSelector((state) => state?.product?.search)
-    const dispatch = useDispatch()
-    const auth = useSelector(authSelector)
-    const [typeProduct, setTypeProduct] = useState([])
+import productAPI from '../../apis/productApi'
+import TypeProductComponent from './TypeProductComponent.tsx/TypeProductComponent'
+
+const GenderProductPage = ({ navigation, route }: any) => {
+    const { state }: { state: string } = route.params
     const [limit, setLimit] = useState(4)
     const [isLoading, setIsLoading] = useState(false)
+    const [productType, setProductType] = useState([])
+    const [typeProduct, setTypeProduct] = useState([])
     const [search, setSearch] = useState('')
     const [inputSearch, setInputSearch] = useState('')
-    const searchDebounce = useDebounce(inputSearch, 100)
-
-
+    const [panigate, setPanigate] = useState({
+        page: 0,
+        limit: 4,
+        total: 1
+    })
+    useEffect(() => {
+        if (state) {
+            fetchProductType(state, panigate.page, panigate.limit, inputSearch)
+        }
+    }, [state, panigate.page, panigate.limit, inputSearch])
+    useEffect(() => {
+        fetchAllTypeProduct()
+    }, [])
 
     const fetchAllTypeProduct = async () => {
         const api = `/get-all-type`;
@@ -38,41 +41,26 @@ const HomeScreen = ({ navigation }: any) => {
         setTypeProduct(res?.data)
     }
 
-    const fetchProductAll = async (context: any) => {
-        const limit = context?.queryKey && context?.queryKey[1]
-        const search = context?.queryKey && context?.queryKey[2]
-        if (search?.length > 0) {
+    const fetchProductType = async (type: any, page: any, limit: any, inputSearch: string) => {
+
+        if (inputSearch?.length > 0) {
             setIsLoading(true)
-            const api = `/get-all?limit=${limit}&filter=name&filter=${search}&sort=desc&sort=createdAt`;
-            const res = await productAPI.HandleProduct(api, { limit, search }, 'get')
-            setIsLoading(false)
-            return res.data
-        } else {
-            setIsLoading(true)
-            const api = `/get-all?limit=${limit}&sort=desc&sort=createdAt`;
+            const api = `/get-all?limit=${limit}&filter=name&filter=${inputSearch}&sort=desc&sort=createdAt`;
             const res = await productAPI.HandleProduct(api, { limit }, 'get')
             setIsLoading(false)
-            return res.data
+            setProductType(res?.data)
+        } else {
+            setIsLoading(true)
+            const api = `/get-all?filter=gender&filter=${type}&limit=${limit}&sort=desc&sort=createdAt`;
+            const res = await productAPI.HandleProduct(api, { limit }, 'get')
+            setIsLoading(false)
+            setProductType(res?.data)
         }
-
     }
-
-    const { data: products, isPlaceholderData } = useQuery({
-        queryKey: ['products', limit, searchDebounce],
-        queryFn: fetchProductAll,
-    })
-
-
-    useEffect(() => {
-        fetchProductAll
-        fetchAllTypeProduct()
-    }, [])
-
     const onSearch = () => {
         setInputSearch(search)
     }
-
-
+    console.log(state)
     return (
         <View style={[globalStyles.container]}>
 
@@ -85,11 +73,10 @@ const HomeScreen = ({ navigation }: any) => {
                     borderBottomRightRadius: 40,
                     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 52,
                 }}>
-
                 <View style={{ paddingHorizontal: 16 }}>
                     <RowComponent>
                         <TouchableOpacity onPress={() => navigation.openDrawer()}>
-                            <HambergerMenu size={28} color={appColors.white} />
+                            <HambergerMenu size={24} color={appColors.white} />
                         </TouchableOpacity>
                         <View style={[{ flex: 1, alignItems: 'center' }]}>
                             <RowComponent>
@@ -103,7 +90,6 @@ const HomeScreen = ({ navigation }: any) => {
                                     size={18}
                                     color={appColors.white}
                                 />
-
                             </RowComponent>
                             <TextComponent
                                 text=""
@@ -133,7 +119,6 @@ const HomeScreen = ({ navigation }: any) => {
                         </CircleComponent>
                     </RowComponent>
                     <SpaceComponent height={24} />
-
                     <RowComponent justify='center' >
                         <SectionComponent styles={{ paddingHorizontal: 10, paddingLeft: 0 }}>
                             <SearchNormal1
@@ -150,29 +135,19 @@ const HomeScreen = ({ navigation }: any) => {
                             onEnd={() => onSearch()}
                         />
                     </RowComponent>
+                    <SpaceComponent height={24} />
                 </View>
             </View>
 
-            <Image
-                source={require('../../assets/images/slider1.png')}
-                resizeMode='repeat'
-                style={{
-                    width: 405,
-                    height: 80,
-                    marginTop: 8,
-                    marginLeft: 10,
-                    //marginBottom: 10,
-                }}
-            />
             <ContainerComponent isImageBackground isScroll>
-                <CardComponent styles={{ margin: 0 }}>
+
+                <CardComponent styles={{ margin: 0, }}>
                     <RowComponent justify='center' styles={{ gap: 20 }} >
-                        {typeProduct.map((item) => {
+                        {typeProduct?.map((item) => {
                             return (
-                                <TypeProduct name={item} key={item} navigation={navigation} />
+                                <TypeProductComponent name={item} key={item} navigation={navigation} />
                             )
                         })}
-
                     </RowComponent>
                 </CardComponent>
                 <CardComponent styles={{ margin: 0, marginTop: 5 }}>
@@ -190,68 +165,22 @@ const HomeScreen = ({ navigation }: any) => {
                                 state: 'nữ',
                             })
                         }}>
-                            <TextComponent text='THỜI TRANG NỮ' styles={{ fontSize: 12, paddingLeft: 15 }} />
+                            <TextComponent text='THỜI TRANG NỮ' styles={{ fontSize: 12, paddingLeft: 10 }} />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
                             navigation.navigate('GenderProductPage', {
                                 state: 'unisex',
                             })
                         }}>
-                            <TextComponent text='THỜI TRANG NAM-NỮ' styles={{ fontSize: 12, }} />
+                            <TextComponent text='THỜI TRANG NAM-NỮ' styles={{ fontSize: 12 }} />
                         </TouchableOpacity>
 
-                    </RowComponent>
-                    <RowComponent justify='space-between' styles={{ marginLeft: 15, marginRight: 15 }}>
-                        <TouchableOpacity onPress={() => {
-                            navigation.navigate('GenderProductPage', {
-                                state: 'nam',
-                            })
-                        }}>
-                            <Image
-                                source={require('../../assets/images/male.png')}
-                                style={{
-                                    width: 110,
-                                    height: 80,
-                                    marginTop: 8,
-                                    marginBottom: 3,
-                                }}
-                            />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {
-                            navigation.navigate('GenderProductPage', {
-                                state: 'nữ',
-                            })
-                        }}>
-                            <Image
-                                source={require('../../assets/images/female.png')}
-                                style={{
-                                    width: 110,
-                                    height: 80,
-                                    marginTop: 8,
-                                    marginBottom: 3,
-                                }}
-                            />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {
-                            navigation.navigate('GenderProductPage', {
-                                state: 'unisex',
-                            })
-                        }}>
-                            <Image
-                                source={require('../../assets/images/unisex.png')}
-                                style={{
-                                    width: 110,
-                                    height: 80,
-                                    marginTop: 8,
-                                    marginBottom: 3,
-                                }}
-                            />
-                        </TouchableOpacity>
                     </RowComponent>
                 </CardComponent>
 
-                <RowComponent styles={{ display: 'flex', gap: 0, marginTop: 0, flexWrap: 'wrap' }}>
-                    {products?.map((product: any) => {
+
+                <RowComponent styles={{ display: 'flex', gap: 5, marginTop: 20, flexWrap: 'wrap' }}>
+                    {productType?.map((product: any) => {
                         return (
                             <CardItem
                                 key={product._id}
@@ -267,7 +196,6 @@ const HomeScreen = ({ navigation }: any) => {
                                 id={product._id}
                                 navigation={navigation}
                                 type="card"
-
                             />
                         )
                     })}
@@ -286,4 +214,4 @@ const HomeScreen = ({ navigation }: any) => {
     )
 }
 
-export default HomeScreen
+export default GenderProductPage

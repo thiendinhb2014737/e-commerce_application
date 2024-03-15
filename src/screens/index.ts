@@ -9,6 +9,7 @@ import Payment from "./home/payment/Payment";
 import MapScreen from "./map/MapScreen";
 import OrderDetails from "./order/OrderDetails";
 import OrderScreen from "./order/OrderScreen";
+import GenderProductPage from "./product/GenderProductPage";
 import ProductDetails from "./product/ProductDetails";
 import SearchProduct from "./product/SearchProduct";
 import TypeProduct from "./product/TypeProduct";
@@ -29,5 +30,6 @@ export {
     ProductDetails,
     Payment,
     OrderScreen,
-    OrderDetails
+    OrderDetails,
+    GenderProductPage
 }

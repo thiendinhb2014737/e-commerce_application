@@ -6,7 +6,7 @@ import productAPI from '../../apis/productApi'
 import { useQuery } from '@tanstack/react-query'
 import { appColors } from '../../constants/appColors'
 import { globalStyles } from '../../styles/globalStyles'
-import { ButtonComponent, CircleComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '../../components'
+import { ButtonComponent, CardComponent, CircleComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '../../components'
 import { HambergerMenu, Notification, SearchNormal1, Sort } from 'iconsax-react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { fontFamilies } from '../../constants/fontFamilies'
@@ -20,8 +20,6 @@ import ContainerComponent from '../home/ContainerComponent/ContainerComponent'
 
 const TypeProduct = ({ navigation, route }: any) => {
     // const searchProduct = useSelector((state) => state?.product?.search)
-
-
     const [limit, setLimit] = useState(4)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -36,8 +34,6 @@ const TypeProduct = ({ navigation, route }: any) => {
         limit: 4,
         total: 1
     })
-    // console.log(state)
-    console.log(inputSearch)
 
     useEffect(() => {
         if (state) {
@@ -156,16 +152,43 @@ const TypeProduct = ({ navigation, route }: any) => {
             </View>
 
             <ContainerComponent isImageBackground isScroll>
+                <CardComponent styles={{ margin: 0 }}>
+                    <RowComponent justify='center' styles={{ gap: 20 }} >
+                        {typeProduct?.map((item) => {
+                            return (
+                                <TypeProductComponent name={item} key={item} navigation={navigation} />
+                            )
+                        })}
+                    </RowComponent>
+                </CardComponent>
+                <CardComponent styles={{ margin: 0, marginTop: 5 }}>
+                    <RowComponent justify='space-between' styles={{ marginLeft: 10, marginRight: 10, marginTop: 10 }}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate('GenderProductPage', {
+                                    state: 'nam',
+                                })
+                            }}>
+                            <TextComponent text='THỜI TRANG NAM' styles={{ fontSize: 12, paddingLeft: 10 }} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            navigation.navigate('GenderProductPage', {
+                                state: 'nữ',
+                            })
+                        }}>
+                            <TextComponent text='THỜI TRANG NỮ' styles={{ fontSize: 12, paddingLeft: 10 }} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            navigation.navigate('GenderProductPage', {
+                                state: 'unisex',
+                            })
+                        }}>
+                            <TextComponent text='THỜI TRANG NAM-NỮ' styles={{ fontSize: 12 }} />
+                        </TouchableOpacity>
 
-                <RowComponent justify='center' styles={{ gap: 20 }} >
-                    {typeProduct?.map((item) => {
-                        return (
-                            <TypeProductComponent name={item} key={item} navigation={navigation} />
-                        )
-                    })}
-                </RowComponent>
-
-                <RowComponent styles={{ display: 'flex', gap: 5, marginTop: 20, flexWrap: 'wrap' }}>
+                    </RowComponent>
+                </CardComponent>
+                <RowComponent styles={{ display: 'flex', gap: 5, marginTop: 5, flexWrap: 'wrap' }}>
                     {productType?.map((product: any) => {
                         return (
                             <CardItem
