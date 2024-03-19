@@ -35,7 +35,7 @@ const Payment = ({ navigation }: any) => {
     const [delivery, setDelivery] = useState('fast')
     const [payment, setPayment] = useState('later_money')
     const [isOpenModalUpdateInfo, setIsOpenModalUpdateInfo] = useState(false)
-    const date = moment().format("MMMM DD YYYY")
+    const date = moment().format("MMMM YYYY")
     const [paypalUrl, setPaypalUrl] = useState(null)
     const [accessToken, setAccessToken]: any = useState(null)
     const [isLoading, setLoading] = useState(false)

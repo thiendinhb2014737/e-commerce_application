@@ -34,7 +34,6 @@ const SignUpScreen = ({ navigation }: any) => {
     const [errMessage, setErrMessage] = useState<any>()
     const [isDisable, setIsDisable] = useState(true);
 
-    const date = moment().format("MMMM DD YYYY")
     const dispatch = useDispatch()
 
     useEffect(() => {

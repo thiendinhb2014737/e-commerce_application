@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import authenticationAPI from '../../apis/authApi';
 import { useDispatch } from 'react-redux';
 import { LoadingModal } from '../../modals';
+import moment from 'moment';
 
 const Verification = ({ navigation, route }: any) => {
     const { code, email, password, username } = route.params;
@@ -19,7 +20,7 @@ const Verification = ({ navigation, route }: any) => {
     const [limit, setLimit] = useState(120);
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-
+    const date = moment().format("MMMM YYYY")
     const dispatch = useDispatch();
 
 
@@ -91,6 +92,7 @@ const Verification = ({ navigation, route }: any) => {
                     email,
                     password,
                     username: username ?? '',
+                    createUserdAt: date,
                 };
 
                 try {
