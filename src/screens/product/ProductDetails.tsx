@@ -232,6 +232,12 @@ const ProductDetails = ({ navigation, route }: any) => {
                         <TextComponent text={`${convertPrice(productDetails?.price)}`} styles={{ fontSize: 18 }} />
                     </RowComponent>
                     <SpaceComponent height={6} />
+                    <RowComponent styles={{ marginLeft: 65 }}>
+                        <TextComponent text={String(productDetails?.countS)} styles={{ paddingRight: 40 }} />
+                        <TextComponent text={String(productDetails?.countM)} styles={{ paddingRight: 40 }} />
+                        <TextComponent text={String(productDetails?.countL)} styles={{ paddingRight: 40 }} />
+                        <TextComponent text={String(productDetails?.countXL)} styles={{ paddingRight: 40 }} />
+                    </RowComponent>
 
                     <RowComponent>
                         <TextComponent text='Kích cỡ:' styles={{ paddingRight: 15 }} />
@@ -257,28 +263,134 @@ const ProductDetails = ({ navigation, route }: any) => {
                         <TextComponent text={productDetails?.sizeXL} styles={{ padding: 10 }} />
                     </RowComponent>
 
-                    <RowComponent>
-                        <TextComponent text='Màu sắc:' styles={{ paddingRight: 10 }} />
-                        <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBe}`, marginRight: 28 }]} onPress={() => setColor('be')}>{
-                            color === 'be' &&
-                            <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
-                        }</TouchableOpacity>
+                    {
+                        size === 'S' ? (
+                            <View>
+                                <RowComponent styles={{ marginLeft: 65 }}>
+                                    <TextComponent text={String(productDetails?.countColorBeS)} styles={{ paddingRight: 40 }} />
+                                    <TextComponent text={String(productDetails?.countColorWhiteS)} styles={{ paddingRight: 40 }} />
+                                    <TextComponent text={String(productDetails?.countColorBlackS)} styles={{ paddingRight: 40 }} />
+                                    <TextComponent text={String(productDetails?.countColorBlueS)} styles={{ paddingRight: 40 }} />
+                                </RowComponent>
+                                <RowComponent>
+                                    <TextComponent text='Màu sắc:' styles={{ paddingRight: 10 }} />
+                                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBe}`, marginRight: 28 }]} onPress={() => setColor(productDetails?.colorBe)}>{
+                                        color === productDetails?.colorBe &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                                    }</TouchableOpacity>
 
-                        <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorWhite}`, marginRight: 28 }]} onPress={() => setColor('white')}>{
-                            color === 'white' &&
-                            <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
-                        }</TouchableOpacity>
+                                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorWhite}`, marginRight: 28 }]} onPress={() => setColor('white')}>{
+                                        color === 'white' &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                                    }</TouchableOpacity>
 
-                        <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBlack}`, marginRight: 28 }]} onPress={() => setColor('black')}>{
-                            color === 'black' &&
-                            <AntDesign style={[styles.check]} name='check' color={appColors.white} size={20} />
-                        }</TouchableOpacity>
+                                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBlack}`, marginRight: 28 }]} onPress={() => setColor('black')}>{
+                                        color === 'black' &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.white} size={20} />
+                                    }</TouchableOpacity>
 
-                        <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBlue}`, marginRight: 28 }]} onPress={() => setColor('blue')}>{
-                            color === 'blue' &&
-                            <AntDesign style={[styles.check]} name='check' color={appColors.white} size={20} />
-                        }</TouchableOpacity>
-                    </RowComponent>
+                                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBlue}`, marginRight: 28 }]} onPress={() => setColor('blue')}>{
+                                        color === 'blue' &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.white} size={20} />
+                                    }</TouchableOpacity>
+                                </RowComponent>
+                            </View>
+                        ) : size === 'M' ? (
+                            <View>
+                                <RowComponent styles={{ marginLeft: 65 }}>
+                                    <TextComponent text={String(productDetails?.countColorBeM)} styles={{ paddingRight: 40 }} />
+                                    <TextComponent text={String(productDetails?.countColorWhiteM)} styles={{ paddingRight: 40 }} />
+                                    <TextComponent text={String(productDetails?.countColorBlackM)} styles={{ paddingRight: 40 }} />
+                                    <TextComponent text={String(productDetails?.countColorBlueM)} styles={{ paddingRight: 40 }} />
+                                </RowComponent>
+                                <RowComponent>
+                                    <TextComponent text='Màu sắc:' styles={{ paddingRight: 10 }} />
+                                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBe}`, marginRight: 28 }]} onPress={() => setColor(productDetails?.colorBe)}>{
+                                        color === productDetails?.colorBe &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                                    }</TouchableOpacity>
+
+                                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorWhite}`, marginRight: 28 }]} onPress={() => setColor('white')}>{
+                                        color === 'white' &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                                    }</TouchableOpacity>
+
+                                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBlack}`, marginRight: 28 }]} onPress={() => setColor('black')}>{
+                                        color === 'black' &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.white} size={20} />
+                                    }</TouchableOpacity>
+
+                                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBlue}`, marginRight: 28 }]} onPress={() => setColor('blue')}>{
+                                        color === 'blue' &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.white} size={20} />
+                                    }</TouchableOpacity>
+                                </RowComponent>
+                            </View>
+                        ) : size === 'L' ? (
+                            <View>
+                                <RowComponent styles={{ marginLeft: 65 }}>
+                                    <TextComponent text={String(productDetails?.countColorBeL)} styles={{ paddingRight: 40 }} />
+                                    <TextComponent text={String(productDetails?.countColorWhiteL)} styles={{ paddingRight: 40 }} />
+                                    <TextComponent text={String(productDetails?.countColorBlackL)} styles={{ paddingRight: 40 }} />
+                                    <TextComponent text={String(productDetails?.countColorBlueL)} styles={{ paddingRight: 40 }} />
+                                </RowComponent>
+                                <RowComponent>
+                                    <TextComponent text='Màu sắc:' styles={{ paddingRight: 10 }} />
+                                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBe}`, marginRight: 28 }]} onPress={() => setColor(productDetails?.colorBe)}>{
+                                        color === productDetails?.colorBe &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                                    }</TouchableOpacity>
+
+                                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorWhite}`, marginRight: 28 }]} onPress={() => setColor('white')}>{
+                                        color === 'white' &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                                    }</TouchableOpacity>
+
+                                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBlack}`, marginRight: 28 }]} onPress={() => setColor('black')}>{
+                                        color === 'black' &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.white} size={20} />
+                                    }</TouchableOpacity>
+
+                                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBlue}`, marginRight: 28 }]} onPress={() => setColor('blue')}>{
+                                        color === 'blue' &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.white} size={20} />
+                                    }</TouchableOpacity>
+                                </RowComponent>
+                            </View>
+                        ) : size === 'XL' ? (
+                            <View>
+                                <RowComponent styles={{ marginLeft: 65 }}>
+                                    <TextComponent text={String(productDetails?.countColorBeXL)} styles={{ paddingRight: 40 }} />
+                                    <TextComponent text={String(productDetails?.countColorWhiteXL)} styles={{ paddingRight: 40 }} />
+                                    <TextComponent text={String(productDetails?.countColorBlackXL)} styles={{ paddingRight: 40 }} />
+                                    <TextComponent text={String(productDetails?.countColorBlueXL)} styles={{ paddingRight: 40 }} />
+                                </RowComponent>
+                                <RowComponent>
+                                    <TextComponent text='Màu sắc:' styles={{ paddingRight: 10 }} />
+                                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBe}`, marginRight: 28 }]} onPress={() => setColor(productDetails?.colorBe)}>{
+                                        color === productDetails?.colorBe &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                                    }</TouchableOpacity>
+
+                                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorWhite}`, marginRight: 28 }]} onPress={() => setColor('white')}>{
+                                        color === 'white' &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.text} size={20} />
+                                    }</TouchableOpacity>
+
+                                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBlack}`, marginRight: 28 }]} onPress={() => setColor('black')}>{
+                                        color === 'black' &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.white} size={20} />
+                                    }</TouchableOpacity>
+
+                                    <TouchableOpacity style={[styles.checkBox, { backgroundColor: `${productDetails?.colorBlue}`, marginRight: 28 }]} onPress={() => setColor('blue')}>{
+                                        color === 'blue' &&
+                                        <AntDesign style={[styles.check]} name='check' color={appColors.white} size={20} />
+                                    }</TouchableOpacity>
+                                </RowComponent>
+                            </View>
+                        ) : <View></View>
+                    }
+
                     <SpaceComponent height={6} />
                     <TextComponent text={`Số lượng còn lại (${productDetails?.countInStock}) sản phẩm`} />
                     <SpaceComponent height={6} />

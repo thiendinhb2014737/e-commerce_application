@@ -7,4 +7,7 @@
 
 // Upload ảnh
 
+// Size, color trong chi tiết sản phẩm
+// Giá tiền trong Paypal
+
 //LOADING KHI VÀO CÁC TRANG CÓ SỰ THAY ĐỔI VỀ SẢN PHẨM
