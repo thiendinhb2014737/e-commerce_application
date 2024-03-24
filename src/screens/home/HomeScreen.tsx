@@ -19,6 +19,7 @@ import { LoadingModal } from '../../modals'
 import InputFormConponent from '../profile/InputFormComponent/InputFormConponent'
 import InputSearchConponent from './InputSearchComponent/InputSearchConponent'
 import ContainerComponent from './ContainerComponent/ContainerComponent'
+import eventAPI from '../../apis/eventApi'
 const HomeScreen = ({ navigation }: any) => {
     // const searchProduct = useSelector((state) => state?.product?.search)
     const dispatch = useDispatch()
@@ -30,6 +31,12 @@ const HomeScreen = ({ navigation }: any) => {
     const [inputSearch, setInputSearch] = useState('')
     const searchDebounce = useDebounce(inputSearch, 100)
 
+    const [days, setDay] = useState('');
+    const [hours, setHour] = useState('');
+    const [minutes, setMinute] = useState('');
+    const [seconds, setSecond] = useState('');
+    const [discountEvent, setDiscountEvent] = useState('');
+    const [limitEvent, setLimitEvent] = useState(1)
 
 
     const fetchAllTypeProduct = async () => {
@@ -56,12 +63,21 @@ const HomeScreen = ({ navigation }: any) => {
         }
 
     }
+    const fetchEvent = async (context: any) => {
+        const limitEvent = context?.queryKey && context?.queryKey[1]
+        const api = `/get-event?limit=${limitEvent}&sort=desc&sort=createdAt`;
+        const res = await eventAPI.HandleEvent(api, { limit }, 'get')
+        return res
+    }
 
     const { data: products, isPlaceholderData } = useQuery({
         queryKey: ['products', limit, searchDebounce],
         queryFn: fetchProductAll,
     })
-
+    const { data: event } = useQuery({
+        queryKey: ['event', limitEvent],
+        queryFn: fetchEvent
+    })
 
     useEffect(() => {
         fetchProductAll
@@ -71,7 +87,28 @@ const HomeScreen = ({ navigation }: any) => {
     const onSearch = () => {
         setInputSearch(search)
     }
+    const fullTime = new Date(`${event?.data[0]?.days} ${event?.data[0]?.hours}:${event?.data[0]?.minutes}:${event?.data[0]?.seconds}`).getTime()
+    useEffect(() => {
+        setDiscountEvent(event?.data[0]?.discount)
+        const interval = setInterval(() => {
+            const now = new Date().getTime()
+            const distance = (fullTime - now) / 1000
+            if (distance > 0) {
+                const days = `0${Math.floor(distance / 60 / 60 / 24)}`.slice(-2)
+                const hours = `0${Math.floor(distance / 60 / 60 % 24)}`.slice(-2)
+                const minutes = `0${Math.floor((distance / 60) % 60)}`.slice(-2)
+                const seconds = `0${Math.floor(distance % 60)}`.slice(-2)
+                setDay(days)
+                setHour(hours)
+                setMinute(minutes)
+                setSecond(seconds)
+            } else {
+                clearInterval(interval)
+            }
+        }, 1000);
+        return () => clearInterval(interval);
 
+    }, [fullTime])
 
     return (
         <View style={[globalStyles.container]}>
@@ -249,6 +286,68 @@ const HomeScreen = ({ navigation }: any) => {
                         </TouchableOpacity>
                     </RowComponent>
                 </CardComponent>
+
+                {(days !== '00' && hours !== '00' && minutes !== '00' && seconds !== '00') ? (
+                    <View
+                        style={{
+                            backgroundColor: appColors.primary,
+                            height: 100 + (Platform.OS === 'ios' ? 16 : 0),
+                        }}>
+                        <TextComponent text='FLASH SALE' color={appColors.white} styles={{ textAlign: 'center' }} font={fontFamilies.semiBold} />
+                        <RowComponent justify='center' styles={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 20, marginTop: 5 }}>
+                            <SectionComponent styles={{ height: 70, width: 70, borderColor: '#fff', borderWidth: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                                <TextComponent text={String(days)} color={appColors.text} styles={{ height: 30, width: 30, borderColor: '#fff', borderWidth: 1, backgroundColor: '#fff', textAlign: 'center', paddingTop: 5, marginTop: 20 }} />
+                                <TextComponent text='Ngày' color={appColors.white} styles={{ height: 20 }} />
+                            </SectionComponent>
+                            <SectionComponent styles={{ height: 70, width: 70, borderColor: '#fff', borderWidth: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                                <TextComponent text={String(hours)} color={appColors.text} styles={{ height: 30, width: 30, borderColor: '#fff', borderWidth: 1, backgroundColor: '#fff', textAlign: 'center', paddingTop: 5, marginTop: 20 }} />
+                                <TextComponent text='Giờ' color={appColors.white} styles={{ height: 20 }} />
+                            </SectionComponent>
+                            <SectionComponent styles={{ height: 70, width: 70, borderColor: '#fff', borderWidth: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                                <TextComponent text={String(minutes)} color={appColors.text} styles={{ height: 30, width: 30, borderColor: '#fff', borderWidth: 1, backgroundColor: '#fff', textAlign: 'center', paddingTop: 5, marginTop: 20 }} />
+                                <TextComponent text='Phút' color={appColors.white} styles={{ height: 20 }} />
+                            </SectionComponent>
+                            <SectionComponent styles={{ height: 70, width: 70, borderColor: '#fff', borderWidth: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                                <TextComponent text={String(seconds)} color={appColors.text} styles={{ height: 30, width: 30, borderColor: '#fff', borderWidth: 1, backgroundColor: '#fff', textAlign: 'center', paddingTop: 5, marginTop: 20 }} />
+                                <TextComponent text='Giây' color={appColors.white} styles={{ height: 20 }} />
+                            </SectionComponent>
+                        </RowComponent>
+
+
+                    </View>
+                ) : <View />
+                }
+
+                {
+
+                    (days !== '00' && hours !== '00' && minutes !== '00' && seconds !== '00') ? (
+                        <RowComponent styles={{ display: 'flex', gap: 0, marginTop: 0, flexWrap: 'wrap', backgroundColor: appColors.gray3 }}>
+                            {products?.map((product: any) => {
+                                if (product.discount >= discountEvent) {
+                                    return (
+                                        <CardItem
+                                            key={product._id}
+                                            countInStock={product.countInStock}
+                                            description={product.description}
+                                            image={product.image}
+                                            name={product.name}
+                                            price={product.price}
+                                            rating={product.rating}
+                                            typePro={product.type}
+                                            selled={product.selled}
+                                            discount={product.discount}
+                                            id={product._id}
+                                            navigation={navigation}
+                                            type="card"
+
+                                        />
+                                    )
+                                }
+                            })}
+                        </RowComponent>
+                    ) : <View />
+
+                }
 
                 <RowComponent styles={{ display: 'flex', gap: 0, marginTop: 0, flexWrap: 'wrap' }}>
                     {products?.map((product: any) => {
