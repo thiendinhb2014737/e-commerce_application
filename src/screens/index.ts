@@ -4,6 +4,7 @@ import LoginScreen from "./auth/LoginScreen";
 import SignUpScreen from "./auth/SignUpScreen";
 import Verification from "./auth/Verification";
 import CartScreen from "./cart/CartScreen";
+import ContactScreen from "./contact/ContactScreen";
 import HomeScreen from "./home/HomeScreen";
 import Payment from "./home/payment/Payment";
 import MapScreen from "./map/MapScreen";
@@ -31,5 +32,6 @@ export {
     Payment,
     OrderScreen,
     OrderDetails,
-    GenderProductPage
+    GenderProductPage,
+    ContactScreen
 }

@@ -10,6 +10,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fontFamilies } from '../constants/fontFamilies';
 import Zocial from 'react-native-vector-icons/Zocial';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 const DrawerCustom = ({ navigation }: any) => {
     //Lay user
     const user = useSelector(authSelector);
@@ -151,6 +152,16 @@ const DrawerCustom = ({ navigation }: any) => {
                 <RowComponent styles={[localStyles.listItem]}>
                     <MaterialCommunityIcons name='file-document-outline' size={size} color={color} />
                     <TextComponent text={'Lịch sử mua hàng'} styles={localStyles.listItemText} />
+                </RowComponent>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.closeDrawer();
+                    navigation.navigate('ContactScreen')
+                }}>
+                <RowComponent styles={[localStyles.listItem]}>
+                    <AntDesign name='contacts' size={size} color={color} />
+                    <TextComponent text={'Liên hệ chúng tôi'} styles={localStyles.listItemText} />
                 </RowComponent>
             </TouchableOpacity>
             <TouchableOpacity

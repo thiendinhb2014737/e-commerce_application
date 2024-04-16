@@ -11,3 +11,6 @@
 // Giá tiền trong Paypal
 
 //LOADING KHI VÀO CÁC TRANG CÓ SỰ THAY ĐỔI VỀ SẢN PHẨM
+---------------------
+CHƯA THIẾT LẬP RÀNG BUỘC SỐ LƯỢNG VỚI MÀU SẮC, Size
+CHƯA CÓ TÍNH NĂNG HỦY ĐƠN HÀNG TRONG CI TIẾT ĐƠN HÀNG

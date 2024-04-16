@@ -196,38 +196,42 @@ const Payment = ({ navigation }: any) => {
 
         }
     }
+    const createOrder = async () => {
+        const api = `/create`;
+        try {
+            const res: any = await orderAPI.HandleOrder(
+                api,
+                {
+                    orderItems: ListOrder,
+                    fullName: name,
+                    address: address,
+                    phone: phone,
+                    paymentMethod: payment,
+                    itemsPrice: priceMemo,
+                    shippingPrice: diliveryPriceMemo,
+                    totalPrice: totalPriceMemo,
+                    user: user?.id,
+                    isPaid: true,
+                    maDH: maDH,
+                    createOrderdAt: String(date),
+                },
+                'post',
+            );
+
+            console.log(res);
+            Alert.alert('Đặt hàng thành công!');
+            setIsSuccessOrder(true)
+        } catch (error) {
+            console.log(`Không thể đặt hàng, ${error}`);
+        }
+    }
     const paymentSucess = async (id: any) => {
         try {
             const res: any = paymentAPI.capturePayment(id, accessToken)
             //console.log("capturePayment res++++", res)
-
-            const api = `/create`;
-            try {
-                const res: any = await orderAPI.HandleOrder(
-                    api,
-                    {
-                        orderItems: ListOrder,
-                        fullName: name,
-                        address: address,
-                        phone: phone,
-                        paymentMethod: payment,
-                        itemsPrice: priceMemo,
-                        shippingPrice: diliveryPriceMemo,
-                        totalPrice: totalPriceMemo,
-                        user: user?.id,
-                        isPaid: true,
-                        maDH: maDH,
-                        createOrderdAt: String(date),
-                    },
-                    'post',
-                );
-
-                //console.log(res);
-                Alert.alert('Đặt hàng thành công!');
-            } catch (error) {
-                console.log(`Không thể đặt hàng, ${error}`);
+            if (res) {
+                createOrder()
             }
-
             clearPaypalState()
         } catch (error) {
             console.log("error raised in payment capture", error)
