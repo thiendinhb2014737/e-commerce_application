@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { GenderProductPage, HomeScreen, OrderDetails, Payment, ProductDetails, SearchProduct, TypeProduct, ContactScreen } from '../screens'
+import { GenderProductPage, HomeScreen, OrderDetails, Payment, ProductDetails, SearchProduct, TypeProduct, ContactScreen, MyLoveScreen } from '../screens'
 
 const ExploreNavigator = () => {
     const Stack = createNativeStackNavigator()
@@ -19,6 +19,7 @@ const ExploreNavigator = () => {
             <Stack.Screen name='OrderDetails' component={OrderDetails} />
             <Stack.Screen name='GenderProductPage' component={GenderProductPage} />
             <Stack.Screen name='ContactScreen' component={ContactScreen} />
+            <Stack.Screen name='MyLoveScreen' component={MyLoveScreen} />
         </Stack.Navigator>
     )
 }

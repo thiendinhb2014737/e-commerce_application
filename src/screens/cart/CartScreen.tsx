@@ -292,7 +292,17 @@ const CartScreen = ({ navigation }: any) => {
 
                                     <SectionComponent>
                                         {order?.image ?
-                                            (<Image source={{ uri: order?.image }} style={{ width: 60, height: 60 }} />)
+                                            (
+                                                <TouchableOpacity
+                                                    onPress={() => {
+                                                        navigation.navigate('ProductDetails', {
+                                                            ProductID: order?.product,
+                                                        })
+                                                    }}>
+                                                    <Image source={{ uri: order?.image }} style={{ width: 60, height: 60 }} />
+                                                </TouchableOpacity>
+
+                                            )
                                             : (
                                                 <View
                                                     style={{ backgroundColor: appColors.white }}>

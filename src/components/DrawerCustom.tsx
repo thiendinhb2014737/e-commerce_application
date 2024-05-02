@@ -120,6 +120,20 @@ const DrawerCustom = ({ navigation }: any) => {
                 onPress={() => {
                     navigation.closeDrawer();
 
+                    navigation.navigate('HomeScreen', {
+                        screen: 'HomeScreen',
+                    });
+                }}>
+                <RowComponent styles={[localStyles.listItem]}>
+                    <User size={size} color={color} />
+                    <TextComponent text={'Trang chủ'} styles={localStyles.listItemText} />
+                </RowComponent>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.closeDrawer();
+
                     navigation.navigate('Profile', {
                         screen: 'ProfileScreen',
                     });
@@ -140,6 +154,16 @@ const DrawerCustom = ({ navigation }: any) => {
                 <RowComponent styles={[localStyles.listItem]}>
                     <Zocial name='cart' size={size} color={color} />
                     <TextComponent text={'Giỏ hàng'} styles={localStyles.listItemText} />
+                </RowComponent>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.closeDrawer();
+                    navigation.navigate('MyLoveScreen')
+                }}>
+                <RowComponent styles={[localStyles.listItem]}>
+                    <AntDesign name='hearto' size={size} color={color} />
+                    <TextComponent text={'Yêu thích của tôi'} styles={localStyles.listItemText} />
                 </RowComponent>
             </TouchableOpacity>
             <TouchableOpacity

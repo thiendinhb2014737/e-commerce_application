@@ -14,3 +14,11 @@
 ---------------------
 CHƯA THIẾT LẬP RÀNG BUỘC SỐ LƯỢNG VỚI MÀU SẮC, Size
 CHƯA CÓ TÍNH NĂNG HỦY ĐƠN HÀNG TRONG CI TIẾT ĐƠN HÀNG
+
+
+-------------------
+//CUỘN NGANG DANH MỤC (xong)
+// LOADING TRANG (xong)
+//LƯU REDUX KHI OUT
+// Sắp lại thứ tự hiển thị trong mục yêu thích (xong)
+// Bỏ nút hủy đơn hàng khi đánh giá xong sp (xong)

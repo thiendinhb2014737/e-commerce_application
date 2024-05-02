@@ -8,6 +8,7 @@ import ContactScreen from "./contact/ContactScreen";
 import HomeScreen from "./home/HomeScreen";
 import Payment from "./home/payment/Payment";
 import MapScreen from "./map/MapScreen";
+import MyLoveScreen from "./mylove/MyLoveScreen";
 import OrderDetails from "./order/OrderDetails";
 import OrderScreen from "./order/OrderScreen";
 import GenderProductPage from "./product/GenderProductPage";
@@ -33,5 +34,6 @@ export {
     OrderScreen,
     OrderDetails,
     GenderProductPage,
-    ContactScreen
+    ContactScreen,
+    MyLoveScreen
 }

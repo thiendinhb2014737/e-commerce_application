@@ -1,4 +1,4 @@
-import { View, Text, Platform, StatusBar, TextInput, Image, StyleSheet } from 'react-native'
+import { View, Text, Platform, StatusBar, TextInput, Image, StyleSheet, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { ButtonComponent, CardComponent, CircleComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '../../components'
 import { LoadingModal } from '../../modals'
@@ -17,7 +17,8 @@ import { authSelector } from '../../redux/reducers/authReducer'
 import { addOrderProduct, orderSelector } from '../../redux/reducers/orderReducer'
 import { convertPrice } from '../../utils/validate'
 import ContainerComponent from '../home/ContainerComponent/ContainerComponent'
-
+import { addloveProProduct, loveProSelector } from '../../redux/reducers/loveProReducer'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const ProductDetails = ({ navigation, route }: any) => {
 
@@ -35,6 +36,7 @@ const ProductDetails = ({ navigation, route }: any) => {
     const [colorBorderL, setColorBorderL] = useState('#111')
     const [colorBorderXL, setColorBorderXL] = useState('#111')
 
+    const lovePro = useSelector(loveProSelector)
 
 
 
@@ -120,7 +122,37 @@ const ProductDetails = ({ navigation, route }: any) => {
         // }
 
     }
-    console.log(size, color)
+    const loveProRedux = lovePro?.loveProItems?.find((item: any) => item.product === productDetails?._id)
+    const handleLovePro = async () => {
+        const loveProRedux = lovePro?.loveProItems?.find((item: any) => item.product === productDetails?._id)
+        if (!loveProRedux) {
+            dispatch(addloveProProduct({
+                loveProItem: {
+                    name: productDetails?.name,
+                    image: productDetails?.image,
+                    price: productDetails?.price,
+                    product: productDetails?._id,
+                    discount: productDetails?.discount,
+                    countInStock: productDetails?.countInStock,
+                },
+            }))
+            // await AsyncStorage.setItem('lovePro', JSON.stringify({
+            //     loveProItem: [{
+            //         name: productDetails?.name,
+            //         image: productDetails?.image,
+            //         price: productDetails?.price,
+            //         product: productDetails?._id,
+            //         discount: productDetails?.discount,
+            //         countInStock: productDetails?.countInStock,
+            //     }],
+            // }));
+        } else {
+            Alert.alert('Bạn đã thêm sản phẩm vào mục Yêu thích!')
+        }
+
+    }
+    //console.log('lovePro', lovePro)
+    //console.log('loveProRedux', loveProRedux)
     return (
         <View style={[globalStyles.container]}>
 
@@ -220,13 +252,27 @@ const ProductDetails = ({ navigation, route }: any) => {
 
                 <CardComponent>
                     <RowComponent justify='flex-start' styles={{ padding: 6, borderWidth: 0.5 }}>
-                        <TextComponent text={`${productDetails?.name}`} styles={{ fontSize: 17, paddingRight: 20 }} />
-                        <TextComponent text={`(-${productDetails?.discount}%)`} styles={{ fontSize: 12, paddingRight: 20 }} />
-                        <TextComponent text={`|  ${productDetails?.rating}`} styles={{ paddingRight: 3, fontSize: 12 }} />
+                        <TextComponent text={`${productDetails?.name}`} styles={{ fontSize: 17, paddingRight: 10 }} />
+                        <TextComponent text={`(-${productDetails?.discount}%)`} styles={{ fontSize: 12, paddingRight: 10 }} />
+                        <TextComponent text={`|  ${productDetails?.rating.toFixed(1)}`} styles={{ paddingRight: 3, fontSize: 12 }} />
                         <Star1 size={12} color='orange' />
-                        <TextComponent text={`|  (Đã bán ${productDetails?.selled})`} styles={{ paddingRight: 20, paddingLeft: 20, fontSize: 12 }} />
+                        <TextComponent text={`|  (Đã bán ${productDetails?.selled})`} styles={{ paddingRight: 10, paddingLeft: 10, fontSize: 12 }} />
                     </RowComponent>
                     <SpaceComponent height={6} />
+                    <RowComponent>
+                        <TextComponent text={`Yêu thích:`} styles={{ fontSize: 14, paddingRight: 10 }} />
+                        {
+                            loveProRedux ?
+                                <TouchableOpacity
+                                    onPress={handleLovePro}>
+                                    <AntDesign name='hearto' size={23} color={appColors.danger} />
+                                </TouchableOpacity> :
+                                <TouchableOpacity
+                                    onPress={handleLovePro}>
+                                    <AntDesign name='hearto' size={23} />
+                                </TouchableOpacity>
+                        }
+                    </RowComponent>
                     <RowComponent>
                         <TextComponent text={`Giá bán:`} styles={{ fontSize: 14, paddingRight: 10 }} />
                         <TextComponent text={`${convertPrice(productDetails?.price)}`} styles={{ fontSize: 18 }} />

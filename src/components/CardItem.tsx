@@ -43,7 +43,7 @@ const CardItem = (props: Props) => {
                 <TextComponent text={name} styles={{ textAlign: 'center' }} />
                 <RowComponent justify='space-around'>
                     <RowComponent>
-                        <TextComponent text={String(rating)} styles={{ fontSize: 10, marginRight: 5 }} />
+                        <TextComponent text={String(rating.toFixed(1))} styles={{ fontSize: 10, marginRight: 5 }} />
                         <Star1 size={12} color='orange' />
                     </RowComponent>
                     <TextComponent text={`Đã bán ${String(selled)}`} styles={{ fontSize: 10 }} />
